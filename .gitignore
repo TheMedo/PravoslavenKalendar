@@ -1,0 +1,28 @@
+# generated files
+.idea/
+.gradle/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Intellij project files
+build/
+*.iml
+
+# Java and Eclipse files
+
+out/
+bin/
+.DS_Store
+.classpath
+.project
+.settings/
+*.ipr
+*.iws
+*.log
+target
+test-output
+temp-testng*.xml
+build/
+*~
+\#*
