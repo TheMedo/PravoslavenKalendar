@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="old_months">
+        <item>Коложег</item>
+        <item>Сечко</item>
+        <item>Цутар</item>
+        <item>Тревен</item>
+        <item>Косар</item>
+        <item>Жетвар</item>
+        <item>Златец</item>
+        <item>Житар</item>
+        <item>Гроздобер</item>
+        <item>Листопад</item>
+        <item>Студен</item>
+        <item>Снежник</item>
+    </array>
+</resources>
