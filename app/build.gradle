@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.medo.pravoslavenkalendar"
-        minSdkVersion 15
+        minSdkVersion 10
         targetSdkVersion 21
         versionCode 40
         versionName "4.0"
@@ -30,4 +30,5 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.jakewharton:butterknife:6.0.0'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
+    compile 'com.sothree.slidinguppanel:library:2.0.4'
 }

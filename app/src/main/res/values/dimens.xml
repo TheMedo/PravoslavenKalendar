@@ -7,5 +7,6 @@
     <dimen name="padding_large">16dp</dimen>
 
     <dimen name="fab_size">52dp</dimen>
-    <dimen name="fab_size_half_negative">-26dp</dimen>
+    <dimen name="fab_size_half">26dp</dimen>
+    <dimen name="header_height">120dp</dimen>
 </resources>

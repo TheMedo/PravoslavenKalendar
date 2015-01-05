@@ -93,7 +93,12 @@
       "dayOfYear":"5",
       "nationalHoliday":null,
       "imageUrl":"",
-      "holidays":[  
+      "holidays":[
+         {
+            "name":"Преподобен Наум Охридски Чудотворец",
+            "color":"црвен",
+            "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=BBEG"
+         },
          {  
             "name":"Св. дeсeт мач. на Крит",
             "color":"црн",
@@ -103,11 +108,6 @@
             "name":"Св. Нифонт Чудотворец",
             "color":"црн",
             "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=BBEV"
-         },
-         {  
-            "name":"Преподобен Наум Охридски Чудотворец",
-            "color":"црвен",
-            "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=BBEG"
          }
       ],
       "fastingFoods":[  
@@ -1094,16 +1094,16 @@
       "dayOfYear":"46",
       "nationalHoliday":null,
       "imageUrl":"",
-      "holidays":[  
+      "holidays":[
+         {
+            "name":"Сретение Господово",
+            "color":"црвен",
+            "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=EI"
+         },
          {  
             "name":"Месни поклади",
             "color":"црн",
             "descriptionUrl":null
-         },
-         {  
-            "name":"Сретение Господово",
-            "color":"црвен",
-            "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=EI"
          },
          {  
             "name":"Свети новомаченик Јордан",
@@ -4495,7 +4495,17 @@
       "dayOfYear":"184",
       "nationalHoliday":null,
       "imageUrl":"",
-      "holidays":[  
+      "holidays":[
+         {
+            "name":"Преподобен Наум Охридски Чудотворец",
+            "color":"црвен",
+            "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=EAB"
+         },
+         {
+            "name":"Блажениот Студиј",
+            "color":"црвен",
+            "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=EAD"
+         },
          {  
             "name":"Св. свештеномученик Методије, епископ патарски",
             "color":"црн",
@@ -4507,11 +4517,6 @@
             "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=EAA"
          },
          {  
-            "name":"Преподобен Наум Охридски Чудотворец",
-            "color":"црвен",
-            "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=EAB"
-         },
-         {  
             "name":"Св. Калист I, патријарх Цариградски",
             "color":"црн",
             "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=EAV"
@@ -4520,11 +4525,6 @@
             "name":"Св. Левкиј, епископ Врунтисиополски, во Италија",
             "color":"црн",
             "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=EAG"
-         },
-         {  
-            "name":"Блажениот Студиј",
-            "color":"црвен",
-            "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=EAD"
          }
       ],
       "fastingFoods":[  
