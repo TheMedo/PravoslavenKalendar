@@ -1,31 +1,47 @@
 package com.medo.pravoslavenkalendar.fragments;
 
 
+import android.annotation.TargetApi;
+import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.Element;
+import android.support.v8.renderscript.RenderScript;
+import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.medo.pravoslavenkalendar.R;
+import com.medo.pravoslavenkalendar.callbacks.BitmapCallback;
 import com.medo.pravoslavenkalendar.model.OrthodoxDay;
 import com.medo.pravoslavenkalendar.utils.Extras;
+import com.medo.pravoslavenkalendar.utils.MathUtils;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class OrthodoxFragment extends Fragment {
+public class OrthodoxFragment extends Fragment implements BitmapCallback {
 
+  @InjectView(R.id.container)
+  RelativeLayout container;
   @InjectView(R.id.image_background)
   ImageView imageBackground;
   @InjectView(R.id.image_blur)
   ImageView imageBlur;
+  @InjectView(R.id.image_dim)
+  ImageView imageDim;
 
   private OrthodoxDay orthodoxDay;
+  private Bitmap blurredImage;
 
   public static OrthodoxFragment newInstance(String jsonOrthodoxDay) {
 
@@ -61,7 +77,76 @@ public class OrthodoxFragment extends Fragment {
             .fit()
             .into(imageBackground);
 
+    Picasso.with(getActivity())
+            .load(/*orthodoxDay.getImageUrl()*/ R.drawable.placeholder)
+            .transform(new Transformation() {
+
+              @Override
+              public Bitmap transform(Bitmap source) {
+
+                // create another bitmap that will hold the results of the filter.
+                Bitmap blurredBitmap = Bitmap.createBitmap(source);
+
+                // create the Renderscript instance that will do the work.
+                RenderScript renderScript = RenderScript.create(getActivity());
+
+                // allocate memory for Renderscript to work with
+                Allocation input = Allocation.createFromBitmap(renderScript, source, Allocation.MipmapControl.MIPMAP_FULL, Allocation.USAGE_SCRIPT);
+                Allocation output = Allocation.createTyped(renderScript, input.getType());
+
+                // load up an instance of the specific script that we want to use.
+                ScriptIntrinsicBlur script = ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
+                script.setInput(input);
+                // set the blur radius
+                script.setRadius(25);
+                // start the ScriptIntrinsicBlur
+                script.forEach(output);
+                // copy the output to the blurred bitmap
+                output.copyTo(blurredBitmap);
+
+                source.recycle();
+                return blurredBitmap;
+              }
+
+              @Override
+              public String key() {
+
+                return "blur";
+              }
+            })
+            .fit()
+            .into(imageBlur);
+
     return view;
+  }
+
+  @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+  public void onPanelSlide(float percentage) {
+
+    // when the panel is sliding from 0 to 1 and vice versa
+    // we need to animate the orthodox image
+
+    // start dimming the image by tweaking the black overlay opacity
+    float newDim = MathUtils.scaleInRange(
+            percentage,
+            0f,
+            1f,
+            0f,
+            0.6f);
+    imageDim.setAlpha(newDim);
+
+    // start showing the blur overlay
+    imageBlur.setAlpha(percentage);
+
+    // scale the image a bit
+    float newScale = MathUtils.scaleInRange(
+            percentage,
+            0f,
+            1f,
+            1f,
+            1.2f);
+    container.setScaleX(newScale);
+    container.setScaleY(newScale);
   }
 
   @Override
@@ -69,5 +154,15 @@ public class OrthodoxFragment extends Fragment {
 
     super.onDestroy();
     ButterKnife.reset(this);
+  }
+
+  @Override
+  public void onSuccess(Bitmap bitmap) {
+
+  }
+
+  @Override
+  public void onFailure() {
+
   }
 }

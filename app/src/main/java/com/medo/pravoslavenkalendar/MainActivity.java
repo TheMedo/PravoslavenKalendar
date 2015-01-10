@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.medo.pravoslavenkalendar.adapters.OrthodoxPagerAdapter;
 import com.medo.pravoslavenkalendar.callbacks.JsonCallbacks;
+import com.medo.pravoslavenkalendar.fragments.OrthodoxFragment;
 import com.medo.pravoslavenkalendar.model.OrthodoxDay;
 import com.medo.pravoslavenkalendar.model.OrthodoxHoliday;
 import com.medo.pravoslavenkalendar.transforms.ParallaxPageTransformer;
@@ -97,6 +98,39 @@ public class MainActivity extends FragmentActivity implements JsonCallbacks, Vie
         panel.setPanelHeight(drawer.findViewById(R.id.linear_header).getHeight() + getResources().getDimensionPixelSize(R.dimen.fab_size_half));
         // we should parallax the view pager with the footer buttons height
         panel.setParalaxOffset(drawer.findViewById(R.id.linear_footer).getHeight());
+        panel.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+
+          @Override
+          public void onPanelSlide(View view, float percentage) {
+
+            if (SystemUtils.versionAtLeast(Build.VERSION_CODES.HONEYCOMB)) {
+              // get the current pager fragment
+              // animate the orthodox icon based on the panel offset
+              OrthodoxFragment orthodoxFragment = ((OrthodoxPagerAdapter) pager.getAdapter()).getFragment(pager.getCurrentItem());
+              orthodoxFragment.onPanelSlide(percentage);
+            }
+          }
+
+          @Override
+          public void onPanelCollapsed(View view) {
+
+          }
+
+          @Override
+          public void onPanelExpanded(View view) {
+
+          }
+
+          @Override
+          public void onPanelAnchored(View view) {
+
+          }
+
+          @Override
+          public void onPanelHidden(View view) {
+
+          }
+        });
       }
     });
   }
