@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.medo.pravoslavenkalendar.R;
-import com.medo.pravoslavenkalendar.callbacks.BitmapCallback;
 import com.medo.pravoslavenkalendar.model.OrthodoxDay;
 import com.medo.pravoslavenkalendar.utils.Extras;
 import com.medo.pravoslavenkalendar.utils.MathUtils;
@@ -29,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class OrthodoxFragment extends Fragment implements BitmapCallback {
+public class OrthodoxFragment extends Fragment {
 
   @InjectView(R.id.container)
   RelativeLayout container;
@@ -154,15 +153,5 @@ public class OrthodoxFragment extends Fragment implements BitmapCallback {
 
     super.onDestroy();
     ButterKnife.reset(this);
-  }
-
-  @Override
-  public void onSuccess(Bitmap bitmap) {
-
-  }
-
-  @Override
-  public void onFailure() {
-
   }
 }
