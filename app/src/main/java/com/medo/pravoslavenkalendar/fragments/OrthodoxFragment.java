@@ -2,10 +2,13 @@ package com.medo.pravoslavenkalendar.fragments;
 
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.graphics.Palette;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
@@ -18,9 +21,11 @@ import android.widget.RelativeLayout;
 
 import com.google.gson.Gson;
 import com.medo.pravoslavenkalendar.R;
+import com.medo.pravoslavenkalendar.callbacks.MainCallback;
 import com.medo.pravoslavenkalendar.model.OrthodoxDay;
 import com.medo.pravoslavenkalendar.utils.Extras;
 import com.medo.pravoslavenkalendar.utils.MathUtils;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
@@ -40,7 +45,8 @@ public class OrthodoxFragment extends Fragment {
   ImageView imageDim;
 
   private OrthodoxDay orthodoxDay;
-  private Bitmap blurredImage;
+  private MainCallback callback;
+  private Palette palette;
 
   public static OrthodoxFragment newInstance(String jsonOrthodoxDay) {
 
@@ -49,6 +55,13 @@ public class OrthodoxFragment extends Fragment {
     args.putString(Extras.EXTRA_DAY, jsonOrthodoxDay);
     fragment.setArguments(args);
     return fragment;
+  }
+
+  @Override
+  public void onAttach(Activity activity) {
+
+    callback = (MainCallback) activity;
+    super.onAttach(activity);
   }
 
   @Override
@@ -74,7 +87,24 @@ public class OrthodoxFragment extends Fragment {
     Picasso.with(getActivity())
             .load(/*orthodoxDay.getImageUrl()*/ R.drawable.placeholder)
             .fit()
-            .into(imageBackground);
+            .into(imageBackground, new Callback() {
+
+              @Override
+              public void onSuccess() {
+                // get the color palette from the loaded image
+                palette = Palette.generate(((BitmapDrawable) imageBackground.getDrawable()).getBitmap(), 3);
+                if (getUserVisibleHint()) {
+                  // if the fragment is visible when the palette is ready
+                  // update the fab color in the main activity
+                  callback.onPaletteReady(palette);
+                }
+              }
+
+              @Override
+              public void onError() {
+
+              }
+            });
 
     Picasso.with(getActivity())
             .load(/*orthodoxDay.getImageUrl()*/ R.drawable.placeholder)
@@ -82,6 +112,12 @@ public class OrthodoxFragment extends Fragment {
 
               @Override
               public Bitmap transform(Bitmap source) {
+                // don't transform the image if the fragment
+                // is not visible to the user
+                if (!isAdded()) {
+                  source.recycle();
+                  return null;
+                }
 
                 // create another bitmap that will hold the results of the filter.
                 Bitmap blurredBitmap = Bitmap.createBitmap(source);
@@ -146,6 +182,11 @@ public class OrthodoxFragment extends Fragment {
             1.2f);
     container.setScaleX(newScale);
     container.setScaleY(newScale);
+  }
+
+  public Palette getPalette() {
+
+    return palette;
   }
 
   @Override

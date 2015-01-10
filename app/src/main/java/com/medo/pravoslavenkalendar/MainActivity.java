@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -18,13 +19,16 @@ import android.widget.TextView;
 
 import com.medo.pravoslavenkalendar.adapters.OrthodoxPagerAdapter;
 import com.medo.pravoslavenkalendar.callbacks.JsonCallbacks;
+import com.medo.pravoslavenkalendar.callbacks.MainCallback;
 import com.medo.pravoslavenkalendar.fragments.OrthodoxFragment;
 import com.medo.pravoslavenkalendar.model.OrthodoxDay;
 import com.medo.pravoslavenkalendar.model.OrthodoxHoliday;
 import com.medo.pravoslavenkalendar.transforms.ParallaxPageTransformer;
 import com.medo.pravoslavenkalendar.transforms.ParallaxTransformInformation;
 import com.medo.pravoslavenkalendar.utils.JsonUtils;
+import com.medo.pravoslavenkalendar.utils.MathUtils;
 import com.medo.pravoslavenkalendar.utils.SystemUtils;
+import com.melnykov.fab.FloatingActionButton;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.text.SimpleDateFormat;
@@ -35,7 +39,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivity extends FragmentActivity implements JsonCallbacks, ViewPager.OnPageChangeListener {
+public class MainActivity extends FragmentActivity implements
+        JsonCallbacks,
+        MainCallback,
+        ViewPager.OnPageChangeListener {
 
   @InjectView(R.id.panel)
   SlidingUpPanelLayout panel;
@@ -43,6 +50,8 @@ public class MainActivity extends FragmentActivity implements JsonCallbacks, Vie
   ViewPager pager;
   @InjectView(R.id.drawer)
   RelativeLayout drawer;
+  @InjectView(R.id.fab)
+  FloatingActionButton fab;
 
   private List<OrthodoxDay> orthodoxDays;
   private Calendar calendar;
@@ -68,11 +77,6 @@ public class MainActivity extends FragmentActivity implements JsonCallbacks, Vie
       pager.setPageTransformer(true, pageTransformer);
     }
 
-
-    // initialize the calendar by parsing the assets json
-    // we don't keep the calendar in database since json parsing
-    // with Gson is lighting fast even on lower end devices
-    JsonUtils.parseCalendar(this, "2015.json", this);
     // initialize the simple date formatter
     simpleDateFormat = new SimpleDateFormat("dd.MM");
     oldMonths = getResources().getStringArray(R.array.old_months);
@@ -133,6 +137,11 @@ public class MainActivity extends FragmentActivity implements JsonCallbacks, Vie
         });
       }
     });
+
+    // initialize the calendar by parsing the assets json
+    // we don't keep the calendar in database since json parsing
+    // with Gson is lighting fast even on lower end devices
+    JsonUtils.parseCalendar(this, "2015.json", this);
   }
 
   @Override
@@ -153,12 +162,20 @@ public class MainActivity extends FragmentActivity implements JsonCallbacks, Vie
     pager.setOnPageChangeListener(this);
     selectedDay = calendar.get(Calendar.DAY_OF_YEAR) - 1;
     pager.setCurrentItem(selectedDay);
+    onPageSelected(selectedDay);
   }
 
   @Override
   public void onError(Exception ex) {
 
+    ex.printStackTrace();
     // TODO show the error
+  }
+
+  @Override
+  public void onPaletteReady(Palette palette) {
+
+    setupFab(palette);
   }
 
   @Override
@@ -173,6 +190,10 @@ public class MainActivity extends FragmentActivity implements JsonCallbacks, Vie
     selectedDay = position;
     // modify the info
     setupDrawer();
+    // change the fab colors based on the
+    // dominant orthodox image colors
+    OrthodoxFragment orthodoxFragment = ((OrthodoxPagerAdapter) pager.getAdapter()).getFragment(pager.getCurrentItem());
+    setupFab(orthodoxFragment.getPalette());
   }
 
   @Override
@@ -195,6 +216,26 @@ public class MainActivity extends FragmentActivity implements JsonCallbacks, Vie
     else {
       super.onBackPressed();
     }
+  }
+
+  private void setupFab(Palette palette) {
+
+    if (palette == null) {
+      return;
+    }
+    // get the dominant colors from the palette
+    // don't use the 0 indexed RBG since the fab won't contrast
+    // the background orthodox icon
+    int normalColor = palette.getSwatches().get(1).getRgb();
+    int pressedColor = palette.getSwatches().get(2).getRgb();
+    // the ripple should be darker variant of the pressed color
+    // factor < 1.0f == darken
+    // factor > 1.0f == lighten
+    int rippleColor = MathUtils.shade(pressedColor, 0.4f);
+    // set the fab color accordingly
+    fab.setColorNormal(normalColor);
+    fab.setColorPressed(pressedColor);
+    fab.setColorRipple(rippleColor);
   }
 
   private void setupDrawer() {

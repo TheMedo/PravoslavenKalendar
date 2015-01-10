@@ -93,7 +93,7 @@
         </LinearLayout>
 
         <com.melnykov.fab.FloatingActionButton
-            android:id="@+id/button_favorite"
+            android:id="@+id/fab"
             android:layout_width="@dimen/fab_size"
             android:layout_height="@dimen/fab_size"
             android:layout_alignParentEnd="true"
