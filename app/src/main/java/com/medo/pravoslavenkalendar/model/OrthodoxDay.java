@@ -1,6 +1,8 @@
 package com.medo.pravoslavenkalendar.model;
 
 
+import com.medo.pravoslavenkalendar.BuildConfig;
+
 import java.util.List;
 
 
@@ -11,8 +13,6 @@ public class OrthodoxDay {
   // is this a national holiday i.e. non working day
   // leave null for normal day, specify the name if a national holiday
   private String nationalHoliday;
-  // link to the image (leave empty for the time being)
-  private String imageUrl;
   // list of holidays for the current day
   private List<OrthodoxHoliday> holidays;
   // the list of available foods (fish, oil, dairy, water)
@@ -41,12 +41,7 @@ public class OrthodoxDay {
 
   public String getImageUrl() {
 
-    return imageUrl;
-  }
-
-  public void setImageUrl(String imageUrl) {
-
-    this.imageUrl = imageUrl;
+    return BuildConfig.API_IMAGE + getDayOfYear() + ".jpg";
   }
 
   public List<OrthodoxHoliday> getHolidays() {

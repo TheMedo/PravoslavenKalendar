@@ -83,9 +83,8 @@ public class OrthodoxFragment extends Fragment {
 
     // we set the background image when we create the fragment view
     // but we set the blurred image on demand based on memory availability
-    // TODO switch to normal image instead of placeholder
     Picasso.with(getActivity())
-            .load(/*orthodoxDay.getImageUrl()*/ R.drawable.placeholder)
+            .load(orthodoxDay.getImageUrl())
             .fit()
             .into(imageBackground, new Callback() {
 
@@ -107,7 +106,7 @@ public class OrthodoxFragment extends Fragment {
             });
 
     Picasso.with(getActivity())
-            .load(/*orthodoxDay.getImageUrl()*/ R.drawable.placeholder)
+            .load(orthodoxDay.getImageUrl())
             .transform(new Transformation() {
 
               @Override
@@ -167,7 +166,7 @@ public class OrthodoxFragment extends Fragment {
             0f,
             1f,
             0f,
-            0.6f);
+            0.4f);
     imageDim.setAlpha(newDim);
 
     // start showing the blur overlay

@@ -220,18 +220,28 @@ public class MainActivity extends FragmentActivity implements
 
   private void setupFab(Palette palette) {
 
-    if (palette == null) {
+    if (palette == null || palette.getSwatches().size() < 2) {
       return;
     }
-    // get the dominant colors from the palette
-    // don't use the 0 indexed RBG since the fab won't contrast
-    // the background orthodox icon
-    int normalColor = palette.getSwatches().get(1).getRgb();
-    int pressedColor = palette.getSwatches().get(2).getRgb();
-    // the ripple should be darker variant of the pressed color
+    // get the two dominant colors from the palette
+    int firstColor = palette.getSwatches().get(0).getRgb();
+    int secondColor = palette.getSwatches().get(1).getRgb();
+
+    // select the darker of the two as a base for the fab
+    int normalColor;
+    if (firstColor < secondColor) {
+      normalColor = firstColor;
+    }
+    else {
+      normalColor = secondColor;
+    }
+
+    // the pressed and ripple colors are lighter variants of the
+    // darker dominant color
     // factor < 1.0f == darken
     // factor > 1.0f == lighten
-    int rippleColor = MathUtils.shade(pressedColor, 0.4f);
+    int pressedColor = MathUtils.shade(normalColor, 1.2f);
+    int rippleColor = MathUtils.shade(normalColor, 1.6f);
     // set the fab color accordingly
     fab.setColorNormal(normalColor);
     fab.setColorPressed(pressedColor);
