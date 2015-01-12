@@ -401,20 +401,49 @@ public class MainActivity extends FragmentActivity implements
       }
     });
 
-    // set the fasting foods
-    String fastingFoods = "";
+    int padding = getResources().getDimensionPixelSize(R.dimen.padding_normal);
+
+    // clean the previous items if needed
+    LinearLayout linearFasting = (LinearLayout) drawer.findViewById(R.id.linear_fasting);
+    linearFasting.removeAllViews();
+    // set the fasting foods with their appropriate icon
     for (String fastingFood : orthodoxDay.getFastingFoods()) {
-      fastingFoods += fastingFood + " ";
+      TextView textFasting = new TextView(this);
+      textFasting.setGravity(Gravity.CENTER);
+      textFasting.setPadding(padding, 0, padding, padding);
+      textFasting.setText(fastingFood);
+      switch (fastingFood.toLowerCase()) {
+        case "води":
+          textFasting.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_water, 0, 0);
+          break;
+        case "масло":
+          textFasting.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_oil, 0, 0);
+          break;
+        case "вино":
+          textFasting.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_wine, 0, 0);
+          break;
+        case "строг пост":
+          textFasting.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fasting, 0, 0);
+          break;
+        case "без пост":
+          textFasting.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_meat, 0, 0);
+          break;
+        case "риба":
+          textFasting.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fish, 0, 0);
+          break;
+        case "млечни производи":
+          textFasting.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_dairy, 0, 0);
+          break;
+      }
+      linearFasting.addView(textFasting);
     }
-    ((TextView) drawer.findViewById(R.id.text_fasting)).setText(fastingFoods.trim());
 
     // set the other holidays if available
     if (orthodoxDay.getHolidays().size() > 1) {
       // clean the previous items if needed
-      LinearLayout linearItems = (LinearLayout) drawer.findViewById(R.id.linear_items);
-      linearItems.removeAllViews();
+      LinearLayout linearHolidays = (LinearLayout) drawer.findViewById(R.id.linear_items);
+      linearHolidays.removeAllViews();
 
-      int padding = getResources().getDimensionPixelSize(R.dimen.padding_normal);
       // iterate through all minor holidays and add them in the drawer
       for (int i = 1; i < orthodoxDay.getHolidays().size(); i++) {
 
@@ -437,7 +466,7 @@ public class MainActivity extends FragmentActivity implements
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(orthodoxHolidayMinor.getDescriptionUrl())));
           }
         });
-        linearItems.addView(textOrthodoxHoliday);
+        linearHolidays.addView(textOrthodoxHoliday);
       }
     }
   }
