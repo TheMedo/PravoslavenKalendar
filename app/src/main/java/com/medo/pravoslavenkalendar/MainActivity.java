@@ -36,6 +36,7 @@ import com.medo.pravoslavenkalendar.transforms.ParallaxTransformInformation;
 import com.medo.pravoslavenkalendar.utils.JsonUtils;
 import com.medo.pravoslavenkalendar.utils.MathUtils;
 import com.medo.pravoslavenkalendar.utils.SystemUtils;
+import com.medo.pravoslavenkalendar.views.FadeInTextView;
 import com.melnykov.fab.FloatingActionButton;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -82,6 +83,12 @@ public class MainActivity extends FragmentActivity implements
   TextView textSaturday;
   @InjectView(R.id.text_sunday)
   TextView textSunday;
+  @InjectView(R.id.text_holiday)
+  FadeInTextView textHoliday;
+  @InjectView(R.id.text_date)
+  TextView textDate;
+  @InjectView(R.id.text_old_month)
+  TextView textOldMonth;
 
   private List<OrthodoxDay> orthodoxDays;
   private Calendar calendar;
@@ -265,22 +272,22 @@ public class MainActivity extends FragmentActivity implements
     int secondColor = palette.getSwatches().get(1).getRgb();
 
     // select the darker of the two as a base for the fab
-    int normalColor;
+    int baseColor;
     if (firstColor < secondColor) {
-      normalColor = firstColor;
+      baseColor = firstColor;
     }
     else {
-      normalColor = secondColor;
+      baseColor = secondColor;
     }
 
     // the pressed and ripple colors are lighter variants of the
     // darker dominant color
     // factor < 1.0f == darken
     // factor > 1.0f == lighten
-    final int pressedColor = MathUtils.shade(normalColor, 1.2f);
-    int rippleColor = MathUtils.shade(normalColor, 1.6f);
+    final int pressedColor = MathUtils.shade(baseColor, 1.2f);
+    int rippleColor = MathUtils.shade(baseColor, 1.6f);
     // set the fab color accordingly
-    fab.setColorNormal(normalColor);
+    fab.setColorNormal(baseColor);
     fab.setColorPressed(pressedColor);
     fab.setColorRipple(rippleColor);
 
@@ -351,8 +358,8 @@ public class MainActivity extends FragmentActivity implements
 
     // set the date
     calendar.set(Calendar.DAY_OF_YEAR, selectedDay + 1);
-    ((TextView) drawer.findViewById(R.id.text_date)).setText(simpleDateFormat.format(calendar.getTime()));
-    ((TextView) drawer.findViewById(R.id.text_old_month)).setText(oldMonths[calendar.get(Calendar.MONTH)]);
+    textDate.setText(simpleDateFormat.format(calendar.getTime()));
+    textOldMonth.setText(oldMonths[calendar.get(Calendar.MONTH)]);
 
     // set the day of week
     clearDayOfWeekColor();
@@ -381,8 +388,9 @@ public class MainActivity extends FragmentActivity implements
     }
 
     // set the major holiday
-    ((TextView) drawer.findViewById(R.id.text_holiday)).setText(orthodoxHolidayMajor.getName());
-    drawer.findViewById(R.id.text_holiday).setOnClickListener(new View.OnClickListener() {
+    textHoliday.initSpanText(orthodoxHolidayMajor.getName(), getResources().getColor(android.R.color.primary_text_light));
+    textHoliday.animateText();
+    textHoliday.setOnClickListener(new View.OnClickListener() {
 
       @Override
       public void onClick(View v) {

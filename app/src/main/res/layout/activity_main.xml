@@ -45,7 +45,7 @@
 
             <include layout="@layout/item_day_of_week"/>
 
-            <TextView
+            <com.medo.pravoslavenkalendar.views.FadeInTextView
                 android:id="@+id/text_holiday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
