@@ -37,7 +37,7 @@ public class AdvancedTextView extends TextView {
     typedArray.recycle();
   }
 
-  void setCustomFont(Context context, String asset) {
+  public void setCustomFont(Context context, String asset) {
 
     try {
       setTypeface(Typeface.createFromAsset(context.getAssets(), asset));

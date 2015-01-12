@@ -1,6 +1,7 @@
 <com.sothree.slidinguppanel.SlidingUpPanelLayout
     android:id="@+id/panel"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
     xmlns:sothree="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -33,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/padding_normal"
                 android:text="@string/placeholder"
-                android:textAppearance="?android:attr/textAppearanceLarge"/>
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/secondary_text_light"/>
 
             <TextView
                 android:id="@+id/text_old_month"
@@ -41,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholder"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/secondary_text_light"
                 android:textStyle="italic"/>
 
             <include layout="@layout/item_day_of_week"/>
@@ -49,13 +52,15 @@
                 android:id="@+id/text_holiday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_normal"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="2"
                 android:minLines="2"
                 android:padding="@dimen/padding_normal"
                 android:text="@string/placeholder"
-                android:textAppearance="?android:attr/textAppearanceLarge"/>
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                app:customFont="fonts/kapak.otf"/>
         </LinearLayout>
 
         <LinearLayout

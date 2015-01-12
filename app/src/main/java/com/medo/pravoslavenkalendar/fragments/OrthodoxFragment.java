@@ -85,7 +85,6 @@ public class OrthodoxFragment extends Fragment implements BitmapCallback {
 
     // we set the background image when we create the fragment view
     // but we set the blurred image on demand based on memory availability
-    System.out.println(orthodoxDay.getImageUrlOrPath(getActivity()));
     Picasso.with(getActivity())
             .load(orthodoxDay.getImageUrlOrPath(getActivity()))
             .placeholder(R.drawable.ic_placeholder)

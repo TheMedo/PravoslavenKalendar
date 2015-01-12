@@ -365,30 +365,31 @@ public class MainActivity extends FragmentActivity implements
     clearDayOfWeekColor();
     switch (calendar.get(Calendar.DAY_OF_WEEK)) {
       case Calendar.MONDAY:
-        textMonday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        textMonday.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
         break;
       case Calendar.TUESDAY:
-        textTuesday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        textTuesday.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
         break;
       case Calendar.WEDNESDAY:
-        textWednesday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        textWednesday.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
         break;
       case Calendar.THURSDAY:
-        textThursday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        textThursday.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
         break;
       case Calendar.FRIDAY:
-        textFriday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        textFriday.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
         break;
       case Calendar.SATURDAY:
-        textSaturday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        textSaturday.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
         break;
       case Calendar.SUNDAY:
-        textSunday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        textSunday.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
         break;
     }
 
     // set the major holiday
     textHoliday.initSpanText(orthodoxHolidayMajor.getName(), getResources().getColor(android.R.color.primary_text_light));
+    textHoliday.setCustomFont(this, "fonts/kapak.otf");
     textHoliday.animateText();
     textHoliday.setOnClickListener(new View.OnClickListener() {
 
@@ -425,7 +426,7 @@ public class MainActivity extends FragmentActivity implements
         textOrthodoxHoliday.setGravity(Gravity.CENTER);
         textOrthodoxHoliday.setMaxLines(1);
         textOrthodoxHoliday.setEllipsize(TextUtils.TruncateAt.END);
-        textOrthodoxHoliday.setPadding(0, 0, 0, padding);
+        textOrthodoxHoliday.setPadding(padding, 0, padding, padding);
 
         textOrthodoxHoliday.setText(orthodoxHolidayMinor.getName());
         textOrthodoxHoliday.setOnClickListener(new View.OnClickListener() {
