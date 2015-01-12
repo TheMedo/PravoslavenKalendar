@@ -84,6 +84,8 @@ public class MainActivity extends BaseActivity implements
   TextView textSunday;
   @InjectView(R.id.text_holiday)
   FadeInTextView textHoliday;
+  @InjectView(R.id.text_holiday_national)
+  FadeInTextView textHolidayNational;
   @InjectView(R.id.text_date)
   TextView textDate;
   @InjectView(R.id.text_old_month)
@@ -431,8 +433,18 @@ public class MainActivity extends BaseActivity implements
       }
     });
 
-    int padding = getResources().getDimensionPixelSize(R.dimen.padding_normal);
+    // set the national holiday if any
+    if (orthodoxDay.getNationalHoliday() != null) {
+      textHolidayNational.setVisibility(View.VISIBLE);
+      textHolidayNational.initSpanText(orthodoxDay.getNationalHoliday(), getResources().getColor(android.R.color.tertiary_text_light));
+      textHolidayNational.setCustomFont(this, "fonts/kapak.otf");
+      textHolidayNational.animateText();
+    }
+    else {
+      textHolidayNational.setVisibility(View.INVISIBLE);
+    }
 
+    int padding = getResources().getDimensionPixelSize(R.dimen.padding_normal);
     // clean the previous items if needed
     LinearLayout linearFasting = (LinearLayout) drawer.findViewById(R.id.linear_fasting);
     linearFasting.removeAllViews();

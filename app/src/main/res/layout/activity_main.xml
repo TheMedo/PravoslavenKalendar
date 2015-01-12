@@ -52,14 +52,31 @@
                 android:id="@+id/text_holiday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/padding_normal"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="2"
                 android:minLines="2"
-                android:padding="@dimen/padding_normal"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
+                android:paddingTop="@dimen/padding_normal"
                 android:text="@string/placeholder"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                app:customFont="fonts/kapak.otf"/>
+
+            <com.medo.pravoslavenkalendar.views.FadeInTextView
+                android:id="@+id/text_holiday_national"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:minLines="1"
+                android:paddingBottom="@dimen/padding_normal"
+                android:paddingLeft="@dimen/padding_normal"
+                android:paddingRight="@dimen/padding_normal"
+                android:text="@string/placeholder"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:visibility="invisible"
                 app:customFont="fonts/kapak.otf"/>
         </LinearLayout>
 
