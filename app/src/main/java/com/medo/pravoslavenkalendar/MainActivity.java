@@ -216,6 +216,17 @@ public class MainActivity extends FragmentActivity implements
   }
 
   @Override
+  public void togglePanel() {
+
+    if (panel.isPanelExpanded()) {
+      panel.collapsePanel();
+    }
+    else {
+      panel.expandPanel();
+    }
+  }
+
+  @Override
   public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
   }
@@ -431,7 +442,7 @@ public class MainActivity extends FragmentActivity implements
         case "риба":
           textFasting.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fish, 0, 0);
           break;
-        case "млечни производи":
+        case "млечни":
           textFasting.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_dairy, 0, 0);
           break;
       }

@@ -127,6 +127,14 @@ public class OrthodoxFragment extends Fragment implements BitmapCallback {
 
               }
             });
+    imageBackground.setOnClickListener(new View.OnClickListener() {
+
+      @Override
+      public void onClick(View v) {
+
+        callback.togglePanel();
+      }
+    });
 
     return view;
   }
