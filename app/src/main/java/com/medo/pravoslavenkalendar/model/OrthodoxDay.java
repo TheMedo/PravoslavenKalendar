@@ -1,8 +1,12 @@
 package com.medo.pravoslavenkalendar.model;
 
 
-import com.medo.pravoslavenkalendar.BuildConfig;
+import android.content.Context;
 
+import com.medo.pravoslavenkalendar.BuildConfig;
+import com.medo.pravoslavenkalendar.utils.FileUtils;
+
+import java.io.File;
 import java.util.List;
 
 
@@ -39,9 +43,26 @@ public class OrthodoxDay {
     this.nationalHoliday = nationalHoliday;
   }
 
-  public String getImageUrl() {
+  public String getImageUrlOrPath(Context context) {
 
-    return BuildConfig.API_IMAGE + getDayOfYear() + ".jpg";
+    File localFile = FileUtils.getOutputPictureFile(context, dayOfYear, false);
+    if (localFile.exists()) {
+      return "file:" + localFile.getAbsolutePath();
+    }
+    else {
+      return BuildConfig.API_IMAGE + getDayOfYear() + ".jpg";
+    }
+  }
+
+  public String getBlurredImagePath(Context context) {
+
+    File localFile = FileUtils.getOutputPictureFile(context, dayOfYear, true);
+    if (localFile.exists()) {
+      return "file:" + localFile.getAbsolutePath();
+    }
+    else {
+      return null;
+    }
   }
 
   public List<OrthodoxHoliday> getHolidays() {

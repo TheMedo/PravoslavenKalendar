@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -207,8 +208,15 @@ public class MainActivity extends FragmentActivity implements
     setupDrawer();
     // change the fab colors based on the
     // dominant orthodox image colors
-    OrthodoxFragment orthodoxFragment = ((OrthodoxPagerAdapter) pager.getAdapter()).getFragment(pager.getCurrentItem());
-    setupButtons(orthodoxFragment.getPalette());
+    try {
+      OrthodoxFragment orthodoxFragment = ((OrthodoxPagerAdapter) pager.getAdapter()).getFragment(pager.getCurrentItem());
+      setupButtons(orthodoxFragment.getPalette());
+    }
+    catch (NullPointerException e) {
+      // the palette is not ready yet
+      // note but ignore the exception
+      Log.d("Pravoslaven", "Palette unavailable");
+    }
   }
 
   @Override
