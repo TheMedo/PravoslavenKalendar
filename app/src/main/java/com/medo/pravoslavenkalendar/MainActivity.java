@@ -10,7 +10,6 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
@@ -48,7 +47,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivity extends FragmentActivity implements
+public class MainActivity extends BaseActivity implements
         JsonCallbacks,
         MainCallback,
         ViewPager.OnPageChangeListener {
@@ -200,6 +199,18 @@ public class MainActivity extends FragmentActivity implements
     selectedDay = calendar.get(Calendar.DAY_OF_YEAR) - 1;
     pager.setCurrentItem(selectedDay);
     onPageSelected(selectedDay);
+
+    // add the fab favorite click listener
+    fab.setOnClickListener(new View.OnClickListener() {
+
+      @Override
+      public void onClick(View v) {
+
+        // toggle the favorite status
+        setFavorite(selectedDay, !isFavorite(selectedDay));
+        setupButtons(null);
+      }
+    });
   }
 
   @Override
@@ -274,6 +285,14 @@ public class MainActivity extends FragmentActivity implements
   }
 
   private void setupButtons(Palette palette) {
+
+    // set the fab favorite status
+    if (isFavorite(selectedDay)) {
+      fab.setImageResource(R.drawable.ic_action_favorite);
+    }
+    else {
+      fab.setImageResource(R.drawable.ic_action_favorite_outline);
+    }
 
     if (palette == null || palette.getSwatches().size() < 2) {
       return;

@@ -59,4 +59,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:6.0.0'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
     compile 'com.sothree.slidinguppanel:library:2.0.4'
+    compile 'com.snappydb:snappydb-lib:0.5.0'
+    compile 'com.esotericsoftware.kryo:kryo:2.24.0'
 }
