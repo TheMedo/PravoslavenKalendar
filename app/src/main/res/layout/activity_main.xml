@@ -43,6 +43,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="italic"/>
 
+            <include layout="@layout/item_day_of_week"/>
+
             <TextView
                 android:id="@+id/text_holiday"
                 android:layout_width="wrap_content"

@@ -68,6 +68,20 @@ public class MainActivity extends FragmentActivity implements
   ImageButton imageWallpaper;
   @InjectView(R.id.image_settings)
   ImageButton imageSettings;
+  @InjectView(R.id.text_monday)
+  TextView textMonday;
+  @InjectView(R.id.text_tuesday)
+  TextView textTuesday;
+  @InjectView(R.id.text_wednesday)
+  TextView textWednesday;
+  @InjectView(R.id.text_thursday)
+  TextView textThursday;
+  @InjectView(R.id.text_friday)
+  TextView textFriday;
+  @InjectView(R.id.text_saturday)
+  TextView textSaturday;
+  @InjectView(R.id.text_sunday)
+  TextView textSunday;
 
   private List<OrthodoxDay> orthodoxDays;
   private Calendar calendar;
@@ -340,6 +354,32 @@ public class MainActivity extends FragmentActivity implements
     ((TextView) drawer.findViewById(R.id.text_date)).setText(simpleDateFormat.format(calendar.getTime()));
     ((TextView) drawer.findViewById(R.id.text_old_month)).setText(oldMonths[calendar.get(Calendar.MONTH)]);
 
+    // set the day of week
+    clearDayOfWeekColor();
+    switch (calendar.get(Calendar.DAY_OF_WEEK)) {
+      case Calendar.MONDAY:
+        textMonday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        break;
+      case Calendar.TUESDAY:
+        textTuesday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        break;
+      case Calendar.WEDNESDAY:
+        textWednesday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        break;
+      case Calendar.THURSDAY:
+        textThursday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        break;
+      case Calendar.FRIDAY:
+        textFriday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        break;
+      case Calendar.SATURDAY:
+        textSaturday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        break;
+      case Calendar.SUNDAY:
+        textSunday.setTextColor(getResources().getColor(android.R.color.primary_text_light));
+        break;
+    }
+
     // set the major holiday
     ((TextView) drawer.findViewById(R.id.text_holiday)).setText(orthodoxHolidayMajor.getName());
     drawer.findViewById(R.id.text_holiday).setOnClickListener(new View.OnClickListener() {
@@ -391,5 +431,16 @@ public class MainActivity extends FragmentActivity implements
         linearItems.addView(textOrthodoxHoliday);
       }
     }
+  }
+
+  private void clearDayOfWeekColor() {
+
+    textMonday.setTextColor(getResources().getColor(android.R.color.secondary_text_dark));
+    textTuesday.setTextColor(getResources().getColor(android.R.color.secondary_text_dark));
+    textWednesday.setTextColor(getResources().getColor(android.R.color.secondary_text_dark));
+    textThursday.setTextColor(getResources().getColor(android.R.color.secondary_text_dark));
+    textFriday.setTextColor(getResources().getColor(android.R.color.secondary_text_dark));
+    textSaturday.setTextColor(getResources().getColor(android.R.color.secondary_text_dark));
+    textSunday.setTextColor(getResources().getColor(android.R.color.secondary_text_dark));
   }
 }

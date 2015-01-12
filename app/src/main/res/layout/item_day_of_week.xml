@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linear_day_of_week"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/text_monday"
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal"
+        android:text="П"
+        android:textColor="@android:color/secondary_text_dark"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/text_tuesday"
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal"
+        android:text="В"
+        android:textColor="@android:color/secondary_text_dark"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/text_wednesday"
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal"
+        android:text="С"
+        android:textColor="@android:color/secondary_text_dark"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/text_thursday"
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal"
+        android:text="Ч"
+        android:textColor="@android:color/secondary_text_dark"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/text_friday"
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal"
+        android:text="П"
+        android:textColor="@android:color/secondary_text_dark"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/text_saturday"
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal"
+        android:text="С"
+        android:textColor="@android:color/secondary_text_dark"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/text_sunday"
+        style="?android:textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal"
+        android:text="Н"
+        android:textColor="@android:color/secondary_text_dark"
+        android:textStyle="bold"/>
+
+</LinearLayout>
