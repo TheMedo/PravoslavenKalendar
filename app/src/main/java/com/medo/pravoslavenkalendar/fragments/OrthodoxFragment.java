@@ -85,6 +85,8 @@ public class OrthodoxFragment extends Fragment {
     // but we set the blurred image on demand based on memory availability
     Picasso.with(getActivity())
             .load(orthodoxDay.getImageUrl())
+            .placeholder(R.drawable.ic_placeholder)
+            .error(R.drawable.ic_error)
             .fit()
             .into(imageBackground, new Callback() {
 

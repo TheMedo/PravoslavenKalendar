@@ -1,7 +1,12 @@
 package com.medo.pravoslavenkalendar;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,9 +15,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,6 +59,14 @@ public class MainActivity extends FragmentActivity implements
   RelativeLayout drawer;
   @InjectView(R.id.fab)
   FloatingActionButton fab;
+  @InjectView(R.id.image_calendar)
+  ImageButton imageCalendar;
+  @InjectView(R.id.image_fasting)
+  ImageButton imageFasting;
+  @InjectView(R.id.image_wallpaper)
+  ImageButton imageWallpaper;
+  @InjectView(R.id.image_settings)
+  ImageButton imageSettings;
 
   private List<OrthodoxDay> orthodoxDays;
   private Calendar calendar;
@@ -175,7 +190,7 @@ public class MainActivity extends FragmentActivity implements
   @Override
   public void onPaletteReady(Palette palette) {
 
-    setupFab(palette);
+    setupButtons(palette);
   }
 
   @Override
@@ -193,7 +208,7 @@ public class MainActivity extends FragmentActivity implements
     // change the fab colors based on the
     // dominant orthodox image colors
     OrthodoxFragment orthodoxFragment = ((OrthodoxPagerAdapter) pager.getAdapter()).getFragment(pager.getCurrentItem());
-    setupFab(orthodoxFragment.getPalette());
+    setupButtons(orthodoxFragment.getPalette());
   }
 
   @Override
@@ -218,7 +233,7 @@ public class MainActivity extends FragmentActivity implements
     }
   }
 
-  private void setupFab(Palette palette) {
+  private void setupButtons(Palette palette) {
 
     if (palette == null || palette.getSwatches().size() < 2) {
       return;
@@ -240,12 +255,70 @@ public class MainActivity extends FragmentActivity implements
     // darker dominant color
     // factor < 1.0f == darken
     // factor > 1.0f == lighten
-    int pressedColor = MathUtils.shade(normalColor, 1.2f);
+    final int pressedColor = MathUtils.shade(normalColor, 1.2f);
     int rippleColor = MathUtils.shade(normalColor, 1.6f);
     // set the fab color accordingly
     fab.setColorNormal(normalColor);
     fab.setColorPressed(pressedColor);
     fab.setColorRipple(rippleColor);
+
+    // select the menu buttons touch listener
+    // there are a lot more elegant ways of doing this
+    // but we are supporting API 10 so we need a workaround
+    View.OnTouchListener touchListener = new View.OnTouchListener() {
+
+      @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+      @Override
+      public boolean onTouch(View view, MotionEvent event) {
+
+        switch (event.getAction()) {
+          case MotionEvent.ACTION_DOWN:
+            // focus the button click based on the palette pressed color
+
+            ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
+            drawable.setIntrinsicHeight(view.getHeight());
+            drawable.setIntrinsicWidth(view.getHeight());
+            drawable.setBounds(new Rect(0, 0, view.getHeight(), view.getHeight()));
+            drawable.getPaint().setColor(pressedColor);
+
+            if (SystemUtils.versionAtLeast(Build.VERSION_CODES.JELLY_BEAN)) {
+              view.setBackground(drawable);
+            }
+            else {
+              view.setBackgroundDrawable(drawable);
+            }
+            break;
+          case MotionEvent.ACTION_UP:
+            // perform the click event
+            switch (view.getId()) {
+              case R.id.image_calendar:
+                // TODO open calendar
+                break;
+              case R.id.image_fasting:
+                // TODO open fasting list
+                break;
+              case R.id.image_wallpaper:
+                // TODO set wallpaper
+                break;
+              case R.id.image_settings:
+                // TODO open settings
+                break;
+            }
+            // don't break here
+            // up will trigger a click and background change
+            // cancel will only trigger background change
+          case MotionEvent.ACTION_CANCEL:
+            view.setBackgroundColor(Color.TRANSPARENT);
+            break;
+        }
+        return false;
+      }
+    };
+    // set the touch listener
+    imageCalendar.setOnTouchListener(touchListener);
+    imageFasting.setOnTouchListener(touchListener);
+    imageWallpaper.setOnTouchListener(touchListener);
+    imageSettings.setOnTouchListener(touchListener);
   }
 
   private void setupDrawer() {
