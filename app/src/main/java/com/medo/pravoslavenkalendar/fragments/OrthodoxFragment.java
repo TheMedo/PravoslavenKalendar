@@ -92,6 +92,10 @@ public class OrthodoxFragment extends Fragment {
 
               @Override
               public void onSuccess() {
+                // don't allow palette update when the fragment is not visible
+                if (!isAdded() || getActivity() == null) {
+                  return;
+                }
                 // get the color palette from the loaded image
                 palette = Palette.generate(((BitmapDrawable) imageBackground.getDrawable()).getBitmap(), 3);
                 if (getUserVisibleHint()) {
@@ -115,9 +119,8 @@ public class OrthodoxFragment extends Fragment {
               public Bitmap transform(Bitmap source) {
                 // don't transform the image if the fragment
                 // is not visible to the user
-                if (!isAdded()) {
-                  source.recycle();
-                  return null;
+                if (!isAdded() || getActivity() == null) {
+                  return source;
                 }
 
                 // create another bitmap that will hold the results of the filter.
@@ -140,8 +143,13 @@ public class OrthodoxFragment extends Fragment {
                 // copy the output to the blurred bitmap
                 output.copyTo(blurredBitmap);
 
-                source.recycle();
-                return blurredBitmap;
+                if (blurredBitmap == null) {
+                  return source;
+                }
+                else {
+                  source.recycle();
+                  return blurredBitmap;
+                }
               }
 
               @Override
