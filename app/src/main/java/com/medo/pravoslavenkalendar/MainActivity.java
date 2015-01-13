@@ -19,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -424,6 +425,35 @@ public class MainActivity extends BaseActivity implements
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.setTime(date);
         pager.setCurrentItem(selectedDate.get(Calendar.DAY_OF_YEAR) - 1, true);
+      }
+
+      @Override
+      public void onChangeMonth(final int month, final int year) {
+
+        // we need a bit of delayed execution
+        // since the listener will override our changes
+        // when this call ends
+        calendarDialog.getMonthTitleTextView().postDelayed(new Runnable() {
+
+          @Override
+          public void run() {
+            // set the month and year as calendar title
+            String monthName = getResources().getStringArray(R.array.months)[month - 1];
+            calendarDialog.getMonthTitleTextView().setText(monthName + " " + year);
+          }
+        }, 1);
+      }
+
+      @Override
+      public void onCaldroidViewCreated() {
+
+        super.onCaldroidViewCreated();
+        // set custom day of week names
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(
+                MainActivity.this,
+                R.layout.item_calendar_day,
+                getResources().getStringArray(R.array.days_of_week));
+        calendarDialog.getWeekdayGridView().setAdapter(itemsAdapter);
       }
     });
 

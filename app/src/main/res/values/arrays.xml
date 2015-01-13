@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <array name="months">
+        <item>Јануари</item>
+        <item>Февруари</item>
+        <item>Март</item>
+        <item>Април</item>
+        <item>Мај</item>
+        <item>Јуни</item>
+        <item>Јули</item>
+        <item>Август</item>
+        <item>Септември</item>
+        <item>Октомври</item>
+        <item>Ноември</item>
+        <item>Декември</item>
+    </array>
     <array name="old_months">
         <item>Коложег</item>
         <item>Сечко</item>
@@ -13,5 +27,14 @@
         <item>Листопад</item>
         <item>Студен</item>
         <item>Снежник</item>
+    </array>
+    <array name="days_of_week">
+        <item>П</item>
+        <item>В</item>
+        <item>С</item>
+        <item>Ч</item>
+        <item>П</item>
+        <item>С</item>
+        <item>Н</item>
     </array>
 </resources>
