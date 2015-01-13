@@ -37,10 +37,13 @@ import com.medo.pravoslavenkalendar.utils.MathUtils;
 import com.medo.pravoslavenkalendar.utils.SystemUtils;
 import com.medo.pravoslavenkalendar.views.FadeInTextView;
 import com.melnykov.fab.FloatingActionButton;
+import com.roomorama.caldroid.CaldroidFragment;
+import com.roomorama.caldroid.CaldroidListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -175,6 +178,10 @@ public class MainActivity extends BaseActivity implements
         });
       }
     });
+
+    // set the custom fonts
+    textHoliday.setCustomFont(this, "fonts/kapak.otf");
+    textHolidayNational.setCustomFont(this, "fonts/kapak.otf");
 
     // initialize the calendar by parsing the assets json
     // we don't keep the calendar in database since json parsing
@@ -353,7 +360,8 @@ public class MainActivity extends BaseActivity implements
             // perform the click event
             switch (view.getId()) {
               case R.id.image_calendar:
-                // TODO open calendar
+                // show the calendar
+                showCalendar();
                 break;
               case R.id.image_fasting:
                 // TODO open fasting list
@@ -380,6 +388,47 @@ public class MainActivity extends BaseActivity implements
     imageFasting.setOnTouchListener(touchListener);
     imageWallpaper.setOnTouchListener(touchListener);
     imageSettings.setOnTouchListener(touchListener);
+  }
+
+  private void showCalendar() {
+
+    final CaldroidFragment calendarDialog = CaldroidFragment.newInstance(
+            null,
+            calendar.get(Calendar.MONTH) + 1,
+            calendar.get(Calendar.YEAR));
+    // set the min date
+    Calendar minDate = Calendar.getInstance();
+    minDate.set(Calendar.DAY_OF_YEAR, 1);
+    minDate.set(Calendar.MONTH, Calendar.JANUARY);
+    minDate.set(Calendar.YEAR, 2015);
+    calendarDialog.setMinDate(minDate.getTime());
+    // set the max date
+    Calendar maxDate = Calendar.getInstance();
+    maxDate.set(Calendar.DAY_OF_YEAR, 1);
+    maxDate.set(Calendar.MONTH, Calendar.JANUARY);
+    maxDate.set(Calendar.YEAR, 2016);
+    calendarDialog.setMaxDate(maxDate.getTime());
+    // set the start day of the week
+    Bundle args = new Bundle();
+    args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
+    calendarDialog.setArguments(args);
+
+    // add the on click listener
+    calendarDialog.setCaldroidListener(new CaldroidListener() {
+
+      @Override
+      public void onSelectDate(Date date, View view) {
+        // dismiss the calendar
+        calendarDialog.dismiss();
+        // scroll to the selected date
+        Calendar selectedDate = Calendar.getInstance();
+        selectedDate.setTime(date);
+        pager.setCurrentItem(selectedDate.get(Calendar.DAY_OF_YEAR) - 1, true);
+      }
+    });
+
+    // show the dialog
+    calendarDialog.show(getSupportFragmentManager(), "Pravoslaven");
   }
 
   private void setupDrawer() {
@@ -421,7 +470,6 @@ public class MainActivity extends BaseActivity implements
 
     // set the major holiday
     textHoliday.initSpanText(orthodoxHolidayMajor.getName(), getResources().getColor(android.R.color.primary_text_light));
-    textHoliday.setCustomFont(this, "fonts/kapak.otf");
     textHoliday.animateText();
     textHoliday.setOnClickListener(new View.OnClickListener() {
 
@@ -437,7 +485,6 @@ public class MainActivity extends BaseActivity implements
     if (orthodoxDay.getNationalHoliday() != null) {
       textHolidayNational.setVisibility(View.VISIBLE);
       textHolidayNational.initSpanText(orthodoxDay.getNationalHoliday(), getResources().getColor(android.R.color.tertiary_text_light));
-      textHolidayNational.setCustomFont(this, "fonts/kapak.otf");
       textHolidayNational.animateText();
     }
     else {
