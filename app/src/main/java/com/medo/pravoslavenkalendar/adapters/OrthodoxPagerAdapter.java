@@ -3,8 +3,6 @@ package com.medo.pravoslavenkalendar.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.SparseArray;
-import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.medo.pravoslavenkalendar.fragments.OrthodoxFragment;
@@ -19,7 +17,6 @@ public class OrthodoxPagerAdapter extends FragmentStatePagerAdapter {
 
   private final List<OrthodoxDay> orthodoxDays;
   private final Gson gson;
-  private final SparseArray<OrthodoxFragment> pageReferenceMap;
 
   public OrthodoxPagerAdapter(FragmentManager fm, List<OrthodoxDay> orthodoxDays) {
 
@@ -27,33 +24,18 @@ public class OrthodoxPagerAdapter extends FragmentStatePagerAdapter {
     // initialize the adapter with the needed variables
     this.orthodoxDays = orthodoxDays;
     this.gson = new Gson();
-    this.pageReferenceMap = new SparseArray<>();
   }
 
   @Override
   public Fragment getItem(int position) {
     // getItem is called to instantiate the fragment for the given page
     // return a new instance of the OrthodoxFragment
-    OrthodoxFragment orthodoxFragment = OrthodoxFragment.newInstance(gson.toJson(orthodoxDays.get(position), OrthodoxDay.class));
-    pageReferenceMap.put(position, orthodoxFragment);
-    return orthodoxFragment;
-  }
-
-  @Override
-  public void destroyItem(ViewGroup container, int position, Object object) {
-
-    super.destroyItem(container, position, object);
-    pageReferenceMap.remove(position);
+    return OrthodoxFragment.newInstance(gson.toJson(orthodoxDays.get(position), OrthodoxDay.class));
   }
 
   @Override
   public int getCount() {
     // the number of pages should represent the number of days we have
     return orthodoxDays.size();
-  }
-
-  public OrthodoxFragment getFragment(int key) {
-
-    return pageReferenceMap.get(key);
   }
 }

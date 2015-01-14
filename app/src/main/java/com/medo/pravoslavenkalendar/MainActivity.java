@@ -10,6 +10,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
@@ -100,7 +101,7 @@ public class MainActivity extends BaseActivity implements
   private SimpleDateFormat simpleDateFormat;
   private String[] oldMonths;
 
-  private int selectedDay;
+  private int selectedPage;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -151,8 +152,11 @@ public class MainActivity extends BaseActivity implements
 
             if (SystemUtils.versionAtLeast(Build.VERSION_CODES.HONEYCOMB)) {
               // get the current pager fragment
-              // animate the orthodox icon based on the panel offset
-              OrthodoxFragment orthodoxFragment = ((OrthodoxPagerAdapter) pager.getAdapter()).getFragment(pager.getCurrentItem());
+              // for fragment state pager adapter we need to use a workaround
+              // to get the current fragment
+              // http://stackoverflow.com/questions/7379165/update-data-in-listfragment-as-part-of-viewpager/8886019#8886019
+              FragmentStatePagerAdapter adapter = (FragmentStatePagerAdapter) pager.getAdapter();
+              OrthodoxFragment orthodoxFragment = (OrthodoxFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
               orthodoxFragment.onPanelSlide(percentage);
             }
           }
@@ -206,9 +210,9 @@ public class MainActivity extends BaseActivity implements
     // set the view pager to show the current day
     // the calendar DAY_OF_YEAR field starts from 1 i.e. position 0
     pager.setOnPageChangeListener(this);
-    selectedDay = calendar.get(Calendar.DAY_OF_YEAR) - 1;
-    pager.setCurrentItem(selectedDay);
-    onPageSelected(selectedDay);
+    selectedPage = calendar.get(Calendar.DAY_OF_YEAR) - 1;
+    pager.setCurrentItem(selectedPage);
+    onPageSelected(selectedPage);
 
     // add the fab favorite click listener
     fab.setOnClickListener(new View.OnClickListener() {
@@ -217,7 +221,7 @@ public class MainActivity extends BaseActivity implements
       public void onClick(View v) {
 
         // toggle the favorite status
-        setFavorite(selectedDay, !isFavorite(selectedDay));
+        setFavorite(selectedPage + 1, !isFavorite(selectedPage + 1));
         setupButtons(null);
       }
     });
@@ -256,13 +260,14 @@ public class MainActivity extends BaseActivity implements
   public void onPageSelected(int position) {
 
     // get the selected day
-    selectedDay = position;
+    selectedPage = position;
     // modify the info
     setupDrawer();
     // change the fab colors based on the
     // dominant orthodox image colors
     try {
-      OrthodoxFragment orthodoxFragment = ((OrthodoxPagerAdapter) pager.getAdapter()).getFragment(pager.getCurrentItem());
+      FragmentStatePagerAdapter adapter = (FragmentStatePagerAdapter) pager.getAdapter();
+      OrthodoxFragment orthodoxFragment = (OrthodoxFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
       setupButtons(orthodoxFragment.getPalette());
     }
     catch (NullPointerException e) {
@@ -297,7 +302,7 @@ public class MainActivity extends BaseActivity implements
   private void setupButtons(Palette palette) {
 
     // set the fab favorite status
-    if (isFavorite(selectedDay)) {
+    if (isFavorite(selectedPage + 1)) {
       fab.setImageResource(R.drawable.ic_action_favorite);
     }
     else {
@@ -414,6 +419,36 @@ public class MainActivity extends BaseActivity implements
     args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY);
     calendarDialog.setArguments(args);
 
+    // color code the calendar
+    Calendar day = Calendar.getInstance();
+    for (OrthodoxDay orthodoxDay : orthodoxDays) {
+      // green background = national holiday
+      if (orthodoxDay.getNationalHoliday() != null) {
+        day.set(Calendar.DAY_OF_YEAR, orthodoxDay.getDayOfYear());
+        calendarDialog.setBackgroundResourceForDate(R.drawable.background_green, day.getTime());
+        calendarDialog.setTextColorForDate(android.R.color.primary_text_dark, day.getTime());
+        // if the national holiday if on sunday
+        // the next day i.e. monday is a non working day
+        if (day.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+          day.add(Calendar.DAY_OF_YEAR, 1);
+          calendarDialog.setBackgroundResourceForDate(R.drawable.background_green, day.getTime());
+          calendarDialog.setTextColorForDate(android.R.color.primary_text_dark, day.getTime());
+        }
+      }
+      // red text = big orthodox holiday
+      else if (orthodoxDay.getHolidays().get(0).getColor().equalsIgnoreCase("црвен")) {
+        day.set(Calendar.DAY_OF_YEAR, orthodoxDay.getDayOfYear());
+        calendarDialog.setTextColorForDate(R.color.red_light, day.getTime());
+      }
+
+      // heart background = favorite holiday
+      if (isFavorite(orthodoxDay.getDayOfYear())) {
+        day.set(Calendar.DAY_OF_YEAR, orthodoxDay.getDayOfYear());
+        calendarDialog.setBackgroundResourceForDate(R.drawable.ic_action_favorite_dark, day.getTime());
+        calendarDialog.setTextColorForDate(android.R.color.primary_text_dark, day.getTime());
+      }
+    }
+
     // add the on click listener
     calendarDialog.setCaldroidListener(new CaldroidListener() {
 
@@ -464,11 +499,11 @@ public class MainActivity extends BaseActivity implements
   private void setupDrawer() {
 
     // get the day and all the holidays
-    final OrthodoxDay orthodoxDay = orthodoxDays.get(selectedDay);
+    final OrthodoxDay orthodoxDay = orthodoxDays.get(selectedPage);
     final OrthodoxHoliday orthodoxHolidayMajor = orthodoxDay.getHolidays().get(0);
 
     // set the date
-    calendar.set(Calendar.DAY_OF_YEAR, selectedDay + 1);
+    calendar.set(Calendar.DAY_OF_YEAR, selectedPage + 1);
     textDate.setText(simpleDateFormat.format(calendar.getTime()));
     textOldMonth.setText(oldMonths[calendar.get(Calendar.MONTH)]);
 
