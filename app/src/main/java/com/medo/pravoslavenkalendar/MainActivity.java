@@ -67,8 +67,8 @@ public class MainActivity extends BaseActivity implements
   FloatingActionButton fab;
   @InjectView(R.id.image_calendar)
   ImageButton imageCalendar;
-  @InjectView(R.id.image_fasting)
-  ImageButton imageFasting;
+  @InjectView(R.id.image_share)
+  ImageButton imageShare;
   @InjectView(R.id.image_wallpaper)
   ImageButton imageWallpaper;
   @InjectView(R.id.image_settings)
@@ -369,8 +369,11 @@ public class MainActivity extends BaseActivity implements
                 // show the calendar
                 showCalendar();
                 break;
-              case R.id.image_fasting:
-                // TODO open fasting list
+              case R.id.image_share:
+                // share the icon with some text
+                String shareText = textDate.getText() + " - " + textHoliday.getText() + "\n" + getString(R.string.app_link);
+                String shareImagePath = orthodoxDays.get(selectedPage).getImageUrlOrPath(MainActivity.this);
+                SystemUtils.shareImage(MainActivity.this, shareText, shareImagePath);
                 break;
               case R.id.image_wallpaper:
                 // TODO set wallpaper
@@ -391,7 +394,7 @@ public class MainActivity extends BaseActivity implements
     };
     // set the touch listener
     imageCalendar.setOnTouchListener(touchListener);
-    imageFasting.setOnTouchListener(touchListener);
+    imageShare.setOnTouchListener(touchListener);
     imageWallpaper.setOnTouchListener(touchListener);
     imageSettings.setOnTouchListener(touchListener);
   }

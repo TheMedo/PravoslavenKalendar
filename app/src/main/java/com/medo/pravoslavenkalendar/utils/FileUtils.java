@@ -7,6 +7,7 @@ import android.util.Log;
 import com.medo.pravoslavenkalendar.R;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class FileUtils {
@@ -25,6 +26,24 @@ public class FileUtils {
       if (!mediaStorageDir.mkdirs()) {
         Log.d("Pravoslaven", "Failed to create directory");
         return null;
+      }
+
+      // create a no media file to prevent the cached image to appear in gallery
+      // http://stackoverflow.com/questions/6713850/android-how-to-hide-folder-from-appearing-in-the-gallery/6713863#6713863
+      File noMediaFile = new File(mediaStorageDir.getAbsolutePath() + File.separator + ".nomedia");
+      System.out.println(noMediaFile.getAbsolutePath());
+      if (!noMediaFile.exists()) {
+        try {
+          if (!noMediaFile.createNewFile()) {
+            Log.d("Pravoslaven", "Failed to create .nomedia file");
+          }
+          else {
+            Log.d("Pravoslaven", ".nomedia file created");
+          }
+        }
+        catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     }
     // Create a media file name based on the blur status
