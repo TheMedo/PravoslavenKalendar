@@ -73,8 +73,6 @@ public class MainActivity extends BaseActivity implements
   ImageButton imageShare;
   @InjectView(R.id.image_wallpaper)
   ImageButton imageWallpaper;
-  @InjectView(R.id.image_settings)
-  ImageButton imageSettings;
   @InjectView(R.id.text_monday)
   TextView textMonday;
   @InjectView(R.id.text_tuesday)
@@ -407,9 +405,6 @@ public class MainActivity extends BaseActivity implements
                         })
                         .show();
                 break;
-              case R.id.image_settings:
-                // TODO open settings
-                break;
             }
             // don't break here
             // up will trigger a click and background change
@@ -425,7 +420,6 @@ public class MainActivity extends BaseActivity implements
     imageCalendar.setOnTouchListener(touchListener);
     imageShare.setOnTouchListener(touchListener);
     imageWallpaper.setOnTouchListener(touchListener);
-    imageSettings.setOnTouchListener(touchListener);
   }
 
   private void showCalendar() {
