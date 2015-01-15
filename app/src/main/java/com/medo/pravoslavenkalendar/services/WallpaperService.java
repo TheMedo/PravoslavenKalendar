@@ -2,6 +2,8 @@ package com.medo.pravoslavenkalendar.services;
 
 import android.app.IntentService;
 import android.app.WallpaperManager;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,9 +11,12 @@ import android.graphics.Point;
 import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.RenderScript;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.medo.pravoslavenkalendar.BuildConfig;
+import com.medo.pravoslavenkalendar.R;
 import com.medo.pravoslavenkalendar.model.OrthodoxDay;
+import com.medo.pravoslavenkalendar.receivers.OrthodoxWidgetProvider;
 import com.medo.pravoslavenkalendar.utils.FileUtils;
 import com.medo.pravoslavenkalendar.utils.JsonUtils;
 import com.medo.pravoslavenkalendar.utils.SystemUtils;
@@ -111,5 +116,9 @@ public class WallpaperService extends IntentService {
       OrthodoxDay orthodoxDay = orthodoxHolidays.get(calendar.get(Calendar.DAY_OF_YEAR) - 1);
       SystemUtils.showWallpaperNotification(this, source, orthodoxDay.getHolidays().get(0).getName());
     }
+    // update the widgets if any
+    RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.widget_layout);
+    ComponentName thisWidget = new ComponentName(this, OrthodoxWidgetProvider.class);
+    AppWidgetManager.getInstance(this).updateAppWidget(thisWidget, remoteViews);
   }
 }
