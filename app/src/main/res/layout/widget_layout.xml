@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/text_holiday"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/text_holiday"
+        android:background="@drawable/background_white_rounded"
+        android:gravity="center"
+        android:text="@string/empty_calendar"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+
+    <TextView
+        android:id="@+id/text_holiday"
+        style="?android:textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/image_cross"
+        android:layout_toRightOf="@+id/image_cross"
+        android:background="@color/red_light"
+        android:paddingBottom="@dimen/padding_normal"
+        android:paddingTop="@dimen/padding_normal"
+        android:text="@string/app_name"
+        android:textColor="@android:color/primary_text_dark"
+        android:textStyle="bold"/>
+
+    <ImageView
+        android:id="@+id/image_cross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/text_holiday"
+        android:layout_alignParentTop="true"
+        android:background="@color/red_light"
+        android:padding="@dimen/padding_normal"
+        android:src="@drawable/ic_stat_cross"/>
+
+</RelativeLayout>

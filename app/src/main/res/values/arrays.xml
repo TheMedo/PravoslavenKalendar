@@ -28,7 +28,7 @@
         <item>Студен</item>
         <item>Снежник</item>
     </array>
-    <array name="days_of_week">
+    <array name="days_of_week_condensed">
         <item>П</item>
         <item>В</item>
         <item>С</item>
@@ -36,5 +36,14 @@
         <item>П</item>
         <item>С</item>
         <item>Н</item>
+    </array>
+    <array name="days_of_week">
+        <item>Недела</item>
+        <item>Понеделник</item>
+        <item>Вторник</item>
+        <item>Среда</item>
+        <item>Четврток</item>
+        <item>Петок</item>
+        <item>Сабота</item>
     </array>
 </resources>

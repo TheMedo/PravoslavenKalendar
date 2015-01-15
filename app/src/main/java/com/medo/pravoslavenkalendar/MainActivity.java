@@ -36,6 +36,7 @@ import com.medo.pravoslavenkalendar.model.OrthodoxDay;
 import com.medo.pravoslavenkalendar.model.OrthodoxHoliday;
 import com.medo.pravoslavenkalendar.transforms.ParallaxPageTransformer;
 import com.medo.pravoslavenkalendar.transforms.ParallaxTransformInformation;
+import com.medo.pravoslavenkalendar.utils.Extras;
 import com.medo.pravoslavenkalendar.utils.JsonUtils;
 import com.medo.pravoslavenkalendar.utils.MathUtils;
 import com.medo.pravoslavenkalendar.utils.SystemUtils;
@@ -209,11 +210,17 @@ public class MainActivity extends BaseActivity implements
     OrthodoxPagerAdapter orthodoxPagerAdapter = new OrthodoxPagerAdapter(getSupportFragmentManager(), orthodoxDays);
     pager.setAdapter(orthodoxPagerAdapter);
 
-    // add page change listener and
-    // set the view pager to show the current day
-    // the calendar DAY_OF_YEAR field starts from 1 i.e. position 0
+    // add page change listener
     pager.setOnPageChangeListener(this);
-    selectedPage = calendar.get(Calendar.DAY_OF_YEAR) - 1;
+    // check if we are launching the activity from widget click
+    if (getIntent().hasExtra(Extras.EXTRA_DAY)) {
+      selectedPage = getIntent().getIntExtra(Extras.EXTRA_DAY, calendar.get(Calendar.DAY_OF_YEAR) - 1);
+    }
+    else {
+      // set the view pager to show the current day
+      // the calendar DAY_OF_YEAR field starts from 1 i.e. position 0
+      selectedPage = calendar.get(Calendar.DAY_OF_YEAR) - 1;
+    }
     pager.setCurrentItem(selectedPage);
     onPageSelected(selectedPage);
 
@@ -520,7 +527,7 @@ public class MainActivity extends BaseActivity implements
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(
                 MainActivity.this,
                 R.layout.item_calendar_day,
-                getResources().getStringArray(R.array.days_of_week));
+                getResources().getStringArray(R.array.days_of_week_condensed));
         calendarDialog.getWeekdayGridView().setAdapter(itemsAdapter);
       }
     });

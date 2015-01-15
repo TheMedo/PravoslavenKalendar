@@ -13,4 +13,6 @@
     <string name="button_wallpaper_disable">Оневозможи</string>
     <string name="placeholder">Placeholder</string>
 
+    <string name="empty_calendar">Календарот се вчитува…</string>
+
 </resources>
