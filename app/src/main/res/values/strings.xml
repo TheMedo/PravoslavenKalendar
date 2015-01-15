@@ -3,6 +3,13 @@
 
     <string name="app_name">Православен Календар</string>
     <string name="app_link">http://goo.gl/O1Zsdn</string>
+
+    <string name="hint_wallpaper_enable" formatted="false">Дали сакате да овозможите дневно автоматско менување на позадините?</string>
+    <string name="hint_wallpaper_disable" formatted="false">Дали сакате да го исклучите менувањето на позадините?</string>
+    <string name="hint_wallpaper_set" formatted="false">Поставување позадина…</string>
+
+    <string name="button_wallpaper_enable">Овозможи</string>
+    <string name="button_wallpaper_disable">Оневозможи</string>
     <string name="placeholder">Placeholder</string>
 
 </resources>

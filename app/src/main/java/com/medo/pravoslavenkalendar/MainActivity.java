@@ -2,6 +2,8 @@ package com.medo.pravoslavenkalendar;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -376,7 +378,33 @@ public class MainActivity extends BaseActivity implements
                 SystemUtils.shareImage(MainActivity.this, shareText, shareImagePath);
                 break;
               case R.id.image_wallpaper:
-                // TODO set wallpaper
+                // check if the wallpapers are enabled or not
+                final boolean wallpaperEnabled = isWallaperEnabled();
+
+                new AlertDialog
+                        .Builder(MainActivity.this)
+                        .setMessage(wallpaperEnabled ? R.string.hint_wallpaper_disable : R.string.hint_wallpaper_enable)
+                        .setPositiveButton((wallpaperEnabled ? R.string.button_wallpaper_disable : R.string.button_wallpaper_enable)
+                                , new DialogInterface.OnClickListener() {
+
+                          @Override
+                          public void onClick(DialogInterface dialog, int which) {
+
+                            if (wallpaperEnabled) {
+                              // disable the wallpaper
+                              setWallpaperEnabled(false);
+                              // hide the panel
+                              togglePanel();
+                            }
+                            else {
+                              // enable the wallpaper
+                              setWallpaperEnabled(true);
+                              // hide the panel
+                              togglePanel();
+                            }
+                          }
+                        })
+                        .show();
                 break;
               case R.id.image_settings:
                 // TODO open settings
