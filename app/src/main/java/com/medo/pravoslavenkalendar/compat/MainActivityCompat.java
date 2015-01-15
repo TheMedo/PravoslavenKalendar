@@ -283,7 +283,7 @@ public class MainActivityCompat extends BaseActivity implements
     }
 
     // select the light red as a base for the fab
-    int baseColor = getResources().getColor(R.color.red_light);
+    int baseColor = getResources().getColor(R.color.primary);
 
     // the pressed and ripple colors are lighter variants of the
     // darker dominant color
@@ -421,7 +421,7 @@ public class MainActivityCompat extends BaseActivity implements
       // red text = big orthodox holiday
       else if (orthodoxDay.getHolidays().get(0).getColor().equalsIgnoreCase("црвен")) {
         day.set(Calendar.DAY_OF_YEAR, orthodoxDay.getDayOfYear());
-        calendarDialog.setTextColorForDate(R.color.red_light, day.getTime());
+        calendarDialog.setTextColorForDate(R.color.primary, day.getTime());
       }
 
       // heart background = favorite holiday

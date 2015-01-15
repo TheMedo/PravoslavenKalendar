@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="white_semi_transparent">#dbffffff</color>
-    <color name="green_dark">#ff669900</color>
-    <color name="red_light">#ffff4444</color>
+    <color name="green_dark">#669900</color>
+    <color name="primary">#fc5454</color>
+    <color name="primary_dark">#b03a3a</color>
+    <color name="accent">#fdaa07</color>
 </resources>

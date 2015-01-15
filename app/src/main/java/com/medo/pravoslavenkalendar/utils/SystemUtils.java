@@ -93,7 +93,7 @@ public class SystemUtils {
     // create indeterminate progress notification style
     NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
             .setSmallIcon(R.drawable.ic_stat_cross)
-            .setColor(context.getResources().getColor(R.color.red_light))
+            .setColor(context.getResources().getColor(R.color.primary))
             .setContentTitle(context.getString(R.string.app_name_condensed))
             .setContentText(context.getString(R.string.hint_wallpaper_set))
             .setOngoing(true)
@@ -121,7 +121,7 @@ public class SystemUtils {
     // the big image should be the app icon
     NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
             .setSmallIcon(R.drawable.ic_stat_cross)
-            .setColor(context.getResources().getColor(R.color.red_light))
+            .setColor(context.getResources().getColor(R.color.primary))
             .setContentTitle(context.getString(R.string.app_name_condensed) + " - " + simpleDateFormat.format(calendar.getTime()))
             .setStyle(
                     new NotificationCompat.BigPictureStyle()

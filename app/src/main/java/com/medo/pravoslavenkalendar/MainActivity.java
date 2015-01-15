@@ -313,7 +313,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     // the default color should be the light red one
-    int firstColor = getResources().getColor(R.color.red_light);
+    int firstColor = getResources().getColor(R.color.primary);
     int secondColor = Integer.MAX_VALUE;
     if (palette != null && palette.getSwatches().size() > 1) {
       // get the two dominant colors from the palette
@@ -471,7 +471,7 @@ public class MainActivity extends BaseActivity implements
       // red text = big orthodox holiday
       else if (orthodoxDay.getHolidays().get(0).getColor().equalsIgnoreCase("црвен")) {
         day.set(Calendar.DAY_OF_YEAR, orthodoxDay.getDayOfYear());
-        calendarDialog.setTextColorForDate(R.color.red_light, day.getTime());
+        calendarDialog.setTextColorForDate(R.color.primary, day.getTime());
       }
 
       // heart background = favorite holiday
