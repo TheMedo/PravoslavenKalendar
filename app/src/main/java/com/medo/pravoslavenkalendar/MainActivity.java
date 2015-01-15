@@ -193,7 +193,7 @@ public class MainActivity extends BaseActivity implements
     // initialize the calendar by parsing the assets json
     // we don't keep the calendar in database since json parsing
     // with Gson is lighting fast even on lower end devices
-    JsonUtils.parseCalendar(this, "2015.json", this);
+    JsonUtils.parseCalendar(this, this);
   }
 
   @Override
@@ -311,12 +311,14 @@ public class MainActivity extends BaseActivity implements
       fab.setImageResource(R.drawable.ic_action_favorite_outline);
     }
 
-    if (palette == null || palette.getSwatches().size() < 2) {
-      return;
+    // the default color should be the light red one
+    int firstColor = getResources().getColor(R.color.red_light);
+    int secondColor = Integer.MAX_VALUE;
+    if (palette != null && palette.getSwatches().size() > 1) {
+      // get the two dominant colors from the palette
+      firstColor = palette.getSwatches().get(0).getRgb();
+      secondColor = palette.getSwatches().get(1).getRgb();
     }
-    // get the two dominant colors from the palette
-    int firstColor = palette.getSwatches().get(0).getRgb();
-    int secondColor = palette.getSwatches().get(1).getRgb();
 
     // select the darker of the two as a base for the fab
     int baseColor;
@@ -350,7 +352,6 @@ public class MainActivity extends BaseActivity implements
         switch (event.getAction()) {
           case MotionEvent.ACTION_DOWN:
             // focus the button click based on the palette pressed color
-
             ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
             drawable.setIntrinsicHeight(view.getHeight());
             drawable.setIntrinsicWidth(view.getHeight());
@@ -380,7 +381,7 @@ public class MainActivity extends BaseActivity implements
               case R.id.image_wallpaper:
                 // check if the wallpapers are enabled or not
                 final boolean wallpaperEnabled = isWallaperEnabled();
-
+                // create the set wallpaper prompt dialog
                 new AlertDialog
                         .Builder(MainActivity.this)
                         .setMessage(wallpaperEnabled ? R.string.hint_wallpaper_disable : R.string.hint_wallpaper_enable)

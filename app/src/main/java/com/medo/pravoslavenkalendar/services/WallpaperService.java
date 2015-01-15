@@ -6,18 +6,21 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.renderscript.Allocation;
-import android.renderscript.RenderScript;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.RenderScript;
 import android.util.Log;
 
 import com.medo.pravoslavenkalendar.BuildConfig;
+import com.medo.pravoslavenkalendar.model.OrthodoxDay;
 import com.medo.pravoslavenkalendar.utils.FileUtils;
+import com.medo.pravoslavenkalendar.utils.JsonUtils;
 import com.medo.pravoslavenkalendar.utils.SystemUtils;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class WallpaperService extends IntentService {
@@ -40,6 +43,9 @@ public class WallpaperService extends IntentService {
     Calendar calendar = Calendar.getInstance();
     File imageFile = FileUtils.getOutputPictureFile(this, calendar.get(Calendar.DAY_OF_YEAR), false);
 
+    // show the progress notification
+    SystemUtils.showProgressNotification(this, calendar.get(Calendar.DAY_OF_YEAR));
+
     Bitmap source;
     if (imageFile.exists()) {
       // decode the local file
@@ -58,6 +64,7 @@ public class WallpaperService extends IntentService {
       catch (IOException e) {
         // if not available don't change the wallpaper
         e.printStackTrace();
+        SystemUtils.cancelNotification(this, calendar.get(Calendar.DAY_OF_YEAR));
         return;
       }
     }
@@ -94,6 +101,15 @@ public class WallpaperService extends IntentService {
     catch (Exception e) {
       e.printStackTrace();
       Log.d("Pravoslaven", "Cannot set wallpaper.");
+    }
+
+    // hide the progress notification when the wallpaper has been set
+    SystemUtils.cancelNotification(this, calendar.get(Calendar.DAY_OF_YEAR));
+    // show the descriptive notification with the name of the holiday
+    List<OrthodoxDay> orthodoxHolidays = JsonUtils.parseCalendar(this);
+    if (orthodoxHolidays != null) {
+      OrthodoxDay orthodoxDay = orthodoxHolidays.get(calendar.get(Calendar.DAY_OF_YEAR) - 1);
+      SystemUtils.showWallpaperNotification(this, source, orthodoxDay.getHolidays().get(0).getName());
     }
   }
 }

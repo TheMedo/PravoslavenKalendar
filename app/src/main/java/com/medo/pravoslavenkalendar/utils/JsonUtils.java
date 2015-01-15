@@ -15,7 +15,7 @@ import java.util.List;
 
 public class JsonUtils {
 
-  public static void parseCalendar(final Context context, final String assetsName, final JsonCallbacks jsonCallbacks) {
+  public static void parseCalendar(Context context, JsonCallbacks jsonCallbacks) {
 
     // load the calendar
     // initialize the GSON parser and prepare the calendar list
@@ -23,7 +23,7 @@ public class JsonUtils {
     List<OrthodoxDay> orthodoxDays;
     try {
       // get the input stream reader for the assets json file that contains the calendar
-      InputStream inputStream = context.getAssets().open(assetsName);
+      InputStream inputStream = context.getAssets().open("2015.json");
       InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
       // parse the json file to create the list of orthodox days
       orthodoxDays = gson.fromJson(new JsonReader(inputStreamReader), new TypeToken<List<OrthodoxDay>>() {}.getType());
@@ -32,6 +32,24 @@ public class JsonUtils {
     catch (Exception e) {
       // an error occurred, propagate it to the UI for handling
       jsonCallbacks.onError(e);
+    }
+  }
+
+  public static List<OrthodoxDay> parseCalendar(final Context context) {
+
+    // load the calendar
+    // initialize the GSON parser and prepare the calendar list
+    Gson gson = new Gson();
+    try {
+      // get the input stream reader for the assets json file that contains the calendar
+      InputStream inputStream = context.getAssets().open("2015.json");
+      InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+      // parse the json file to create the list of orthodox days
+      return gson.fromJson(new JsonReader(inputStreamReader), new TypeToken<List<OrthodoxDay>>() {}.getType());
+    }
+    catch (Exception e) {
+      // an error occurred, propagate it to the UI for handling
+      return null;
     }
   }
 }
