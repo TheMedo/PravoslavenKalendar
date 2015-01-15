@@ -82,7 +82,7 @@ public class BaseActivity extends FragmentActivity {
     }
   }
 
-  protected boolean isWallaperEnabled() {
+  protected boolean isWallapperEnabled() {
 
     try {
       // get the favorite status for the current day

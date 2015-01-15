@@ -12,4 +12,20 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_placeholder"/>
+
+    <ImageView
+        android:id="@+id/image_blur"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/image_dim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:scaleType="centerCrop"
+        android:src="@android:color/black"/>
+
 </RelativeLayout>

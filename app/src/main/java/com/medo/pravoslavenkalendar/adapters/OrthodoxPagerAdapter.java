@@ -1,12 +1,15 @@
 package com.medo.pravoslavenkalendar.adapters;
 
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.google.gson.Gson;
+import com.medo.pravoslavenkalendar.compat.OrthodoxFragmentCompat;
 import com.medo.pravoslavenkalendar.fragments.OrthodoxFragment;
 import com.medo.pravoslavenkalendar.model.OrthodoxDay;
+import com.medo.pravoslavenkalendar.utils.SystemUtils;
 
 import java.util.List;
 
@@ -30,7 +33,12 @@ public class OrthodoxPagerAdapter extends FragmentStatePagerAdapter {
   public Fragment getItem(int position) {
     // getItem is called to instantiate the fragment for the given page
     // return a new instance of the OrthodoxFragment
-    return OrthodoxFragment.newInstance(gson.toJson(orthodoxDays.get(position), OrthodoxDay.class));
+    if (SystemUtils.versionAtLeast(Build.VERSION_CODES.ICE_CREAM_SANDWICH)) {
+      return OrthodoxFragment.newInstance(gson.toJson(orthodoxDays.get(position), OrthodoxDay.class));
+    }
+    else {
+      return OrthodoxFragmentCompat.newInstance(gson.toJson(orthodoxDays.get(position), OrthodoxDay.class));
+    }
   }
 
   @Override

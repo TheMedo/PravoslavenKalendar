@@ -29,8 +29,7 @@
         android:layout_marginStart="@dimen/padding_normal"
         android:background="@android:color/transparent"
         android:padding="@dimen/padding_normal"
-        android:src="@drawable/ic_action_wallpaper"
-        android:visibility="invisible"/>
+        android:src="@drawable/ic_action_wallpaper"/>
 
     <ImageButton
         android:id="@+id/image_share"

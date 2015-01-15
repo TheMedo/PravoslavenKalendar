@@ -48,7 +48,7 @@
 
             <include layout="@layout/item_day_of_week"/>
 
-            <com.medo.pravoslavenkalendar.views.AdvancedTextView
+            <com.medo.pravoslavenkalendar.views.FadeInTextView
                 android:id="@+id/text_holiday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 app:customFont="fonts/kapak.otf"/>
 
-            <com.medo.pravoslavenkalendar.views.AdvancedTextView
+            <com.medo.pravoslavenkalendar.views.FadeInTextView
                 android:id="@+id/text_holiday_national"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

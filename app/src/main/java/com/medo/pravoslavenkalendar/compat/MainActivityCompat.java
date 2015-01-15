@@ -1,4 +1,4 @@
-package com.medo.pravoslavenkalendar;
+package com.medo.pravoslavenkalendar.compat;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -15,31 +15,29 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.graphics.Palette;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.medo.pravoslavenkalendar.BaseActivity;
+import com.medo.pravoslavenkalendar.R;
 import com.medo.pravoslavenkalendar.adapters.OrthodoxPagerAdapter;
 import com.medo.pravoslavenkalendar.callbacks.JsonCallbacks;
 import com.medo.pravoslavenkalendar.callbacks.MainCallback;
-import com.medo.pravoslavenkalendar.compat.MainActivityCompat;
 import com.medo.pravoslavenkalendar.fragments.OrthodoxFragment;
 import com.medo.pravoslavenkalendar.model.OrthodoxDay;
 import com.medo.pravoslavenkalendar.model.OrthodoxHoliday;
-import com.medo.pravoslavenkalendar.transforms.ParallaxPageTransformer;
-import com.medo.pravoslavenkalendar.transforms.ParallaxTransformInformation;
-import com.medo.pravoslavenkalendar.utils.Extras;
 import com.medo.pravoslavenkalendar.utils.JsonUtils;
 import com.medo.pravoslavenkalendar.utils.MathUtils;
 import com.medo.pravoslavenkalendar.utils.SystemUtils;
-import com.medo.pravoslavenkalendar.views.FadeInTextView;
+import com.medo.pravoslavenkalendar.views.AdvancedTextView;
 import com.melnykov.fab.FloatingActionButton;
 import com.roomorama.caldroid.CaldroidFragment;
 import com.roomorama.caldroid.CaldroidListener;
@@ -54,7 +52,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class MainActivity extends BaseActivity implements
+public class MainActivityCompat extends BaseActivity implements
         JsonCallbacks,
         MainCallback,
         ViewPager.OnPageChangeListener {
@@ -88,9 +86,9 @@ public class MainActivity extends BaseActivity implements
   @InjectView(R.id.text_sunday)
   TextView textSunday;
   @InjectView(R.id.text_holiday)
-  FadeInTextView textHoliday;
+  AdvancedTextView textHoliday;
   @InjectView(R.id.text_holiday_national)
-  FadeInTextView textHolidayNational;
+  AdvancedTextView textHolidayNational;
   @InjectView(R.id.text_date)
   TextView textDate;
   @InjectView(R.id.text_old_month)
@@ -103,39 +101,27 @@ public class MainActivity extends BaseActivity implements
 
   private int selectedPage;
 
-  @TargetApi(Build.VERSION_CODES.HONEYCOMB)
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);
-    /// launch the compat activity for lower APIs
-    if (!SystemUtils.versionAtLeast(Build.VERSION_CODES.ICE_CREAM_SANDWICH)) {
-      startActivity(new Intent(this, MainActivityCompat.class));
-      finish();
-      return;
-    }
-
     // set the content view and inject the views
     setContentView(R.layout.activity_main);
     ButterKnife.inject(this);
-
-    // setup the view pager
-    ParallaxPageTransformer pageTransformer = new ParallaxPageTransformer()
-            .addViewToParallax(new ParallaxTransformInformation(R.id.image_background, 2, 2));
-    pager.setPageTransformer(true, pageTransformer);
 
     // initialize the simple date formatter
     simpleDateFormat = new SimpleDateFormat("dd.MM");
     oldMonths = getResources().getStringArray(R.array.old_months);
 
     // measure the drawer view
-    drawer.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+    drawer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 
       @Override
-      public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+      public void onGlobalLayout() {
         // the view has been measured
         // remove the layout listeners
-        drawer.removeOnLayoutChangeListener(this);
+        drawer.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+
         // the view has been measured
         // use the values to set the panel initial height
         // it should be sum of the header height plus the fab margin offset
@@ -147,13 +133,15 @@ public class MainActivity extends BaseActivity implements
           @Override
           public void onPanelSlide(View view, float percentage) {
 
-            // get the current pager fragment
-            // for fragment state pager adapter we need to use a workaround
-            // to get the current fragment
-            // http://stackoverflow.com/questions/7379165/update-data-in-listfragment-as-part-of-viewpager/8886019#8886019
-            FragmentStatePagerAdapter adapter = (FragmentStatePagerAdapter) pager.getAdapter();
-            OrthodoxFragment orthodoxFragment = (OrthodoxFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
-            orthodoxFragment.onPanelSlide(percentage);
+            if (SystemUtils.versionAtLeast(Build.VERSION_CODES.HONEYCOMB)) {
+              // get the current pager fragment
+              // for fragment state pager adapter we need to use a workaround
+              // to get the current fragment
+              // http://stackoverflow.com/questions/7379165/update-data-in-listfragment-as-part-of-viewpager/8886019#8886019
+              FragmentStatePagerAdapter adapter = (FragmentStatePagerAdapter) pager.getAdapter();
+              OrthodoxFragment orthodoxFragment = (OrthodoxFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
+              orthodoxFragment.onPanelSlide(percentage);
+            }
           }
 
           @Override
@@ -206,17 +194,12 @@ public class MainActivity extends BaseActivity implements
 
     // add page change listener
     pager.setOnPageChangeListener(this);
-    // check if we are launching the activity from widget click
-    if (getIntent().hasExtra(Extras.EXTRA_DAY)) {
-      selectedPage = getIntent().getIntExtra(Extras.EXTRA_DAY, calendar.get(Calendar.DAY_OF_YEAR) - 1);
-    }
-    else {
-      // set the view pager to show the current day
-      // the calendar DAY_OF_YEAR field starts from 1 i.e. position 0
-      selectedPage = calendar.get(Calendar.DAY_OF_YEAR) - 1;
-    }
+    // set the view pager to show the current day
+    // the calendar DAY_OF_YEAR field starts from 1 i.e. position 0
+    selectedPage = calendar.get(Calendar.DAY_OF_YEAR) - 1;
     pager.setCurrentItem(selectedPage);
     onPageSelected(selectedPage);
+    setupButtons();
 
     // add the fab favorite click listener
     fab.setOnClickListener(new View.OnClickListener() {
@@ -226,7 +209,7 @@ public class MainActivity extends BaseActivity implements
 
         // toggle the favorite status
         setFavorite(selectedPage + 1, !isFavorite(selectedPage + 1));
-        setupButtons(null);
+        setupButtons();
       }
     });
   }
@@ -240,7 +223,6 @@ public class MainActivity extends BaseActivity implements
   @Override
   public void onPaletteReady(Palette palette) {
 
-    setupButtons(palette);
   }
 
   @Override
@@ -266,18 +248,6 @@ public class MainActivity extends BaseActivity implements
     selectedPage = position;
     // modify the info
     setupDrawer();
-    // change the fab colors based on the
-    // dominant orthodox image colors
-    try {
-      FragmentStatePagerAdapter adapter = (FragmentStatePagerAdapter) pager.getAdapter();
-      OrthodoxFragment orthodoxFragment = (OrthodoxFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
-      setupButtons(orthodoxFragment.getPalette());
-    }
-    catch (NullPointerException e) {
-      // the palette is not ready yet
-      // note but ignore the exception
-      Log.d("Pravoslaven", "Palette unavailable");
-    }
   }
 
   @Override
@@ -302,7 +272,7 @@ public class MainActivity extends BaseActivity implements
     }
   }
 
-  private void setupButtons(Palette palette) {
+  private void setupButtons() {
 
     // set the fab favorite status
     if (isFavorite(selectedPage + 1)) {
@@ -312,23 +282,8 @@ public class MainActivity extends BaseActivity implements
       fab.setImageResource(R.drawable.ic_action_favorite_outline);
     }
 
-    // the default color should be the light red one
-    int firstColor = getResources().getColor(R.color.red_light);
-    int secondColor = Integer.MAX_VALUE;
-    if (palette != null && palette.getSwatches().size() > 1) {
-      // get the two dominant colors from the palette
-      firstColor = palette.getSwatches().get(0).getRgb();
-      secondColor = palette.getSwatches().get(1).getRgb();
-    }
-
-    // select the darker of the two as a base for the fab
-    int baseColor;
-    if (firstColor < secondColor) {
-      baseColor = firstColor;
-    }
-    else {
-      baseColor = secondColor;
-    }
+    // select the light red as a base for the fab
+    int baseColor = getResources().getColor(R.color.red_light);
 
     // the pressed and ripple colors are lighter variants of the
     // darker dominant color
@@ -359,12 +314,7 @@ public class MainActivity extends BaseActivity implements
             drawable.setBounds(new Rect(0, 0, view.getHeight(), view.getHeight()));
             drawable.getPaint().setColor(pressedColor);
 
-            if (SystemUtils.versionAtLeast(Build.VERSION_CODES.JELLY_BEAN)) {
-              view.setBackground(drawable);
-            }
-            else {
-              view.setBackgroundDrawable(drawable);
-            }
+            view.setBackgroundDrawable(drawable);
             break;
           case MotionEvent.ACTION_UP:
             // perform the click event
@@ -376,15 +326,15 @@ public class MainActivity extends BaseActivity implements
               case R.id.image_share:
                 // share the icon with some text
                 String shareText = textDate.getText() + " - " + textHoliday.getText() + "\n" + getString(R.string.app_link);
-                String shareImagePath = orthodoxDays.get(selectedPage).getImageUrlOrPath(MainActivity.this);
-                SystemUtils.shareImage(MainActivity.this, shareText, shareImagePath);
+                String shareImagePath = orthodoxDays.get(selectedPage).getImageUrlOrPath(MainActivityCompat.this);
+                SystemUtils.shareImage(MainActivityCompat.this, shareText, shareImagePath);
                 break;
               case R.id.image_wallpaper:
                 // check if the wallpapers are enabled or not
                 final boolean wallpaperEnabled = isWallapperEnabled();
                 // create the set wallpaper prompt dialog
                 new AlertDialog
-                        .Builder(MainActivity.this)
+                        .Builder(MainActivityCompat.this)
                         .setMessage(wallpaperEnabled ? R.string.hint_wallpaper_disable : R.string.hint_wallpaper_enable)
                         .setPositiveButton((wallpaperEnabled ? R.string.button_wallpaper_disable : R.string.button_wallpaper_enable)
                                 , new DialogInterface.OnClickListener() {
@@ -518,7 +468,7 @@ public class MainActivity extends BaseActivity implements
         super.onCaldroidViewCreated();
         // set custom day of week names
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(
-                MainActivity.this,
+                MainActivityCompat.this,
                 R.layout.item_calendar_day,
                 getResources().getStringArray(R.array.days_of_week_condensed));
         calendarDialog.getWeekdayGridView().setAdapter(itemsAdapter);
@@ -567,8 +517,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     // set the major holiday
-    textHoliday.initSpanText(orthodoxHolidayMajor.getName(), getResources().getColor(android.R.color.primary_text_light));
-    textHoliday.animateText();
+    textHoliday.setText(orthodoxHolidayMajor.getName());
     textHoliday.setOnClickListener(new View.OnClickListener() {
 
       @Override
@@ -582,8 +531,7 @@ public class MainActivity extends BaseActivity implements
     // set the national holiday if any
     if (orthodoxDay.getNationalHoliday() != null) {
       textHolidayNational.setVisibility(View.VISIBLE);
-      textHolidayNational.initSpanText(orthodoxDay.getNationalHoliday(), getResources().getColor(android.R.color.tertiary_text_light));
-      textHolidayNational.animateText();
+      textHolidayNational.setText(orthodoxDay.getNationalHoliday());
     }
     else {
       textHolidayNational.setVisibility(View.INVISIBLE);
