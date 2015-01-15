@@ -18,9 +18,25 @@ android {
         variant.outputs.each { output ->
             def outputFile = output.outputFile
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                def fileName = outputFile.name.replace(".apk", "${variant.versionName}-${variant.versionCode}.apk")
+                def fileName = outputFile.name.replace(".apk", "-${variant.versionName}-${variant.versionCode}.apk")
                 output.outputFile = new File(outputFile.parent, fileName)
             }
+        }
+    }
+
+//    signingConfigs {
+//
+//        release {
+//            storeFile file("medo.keystore")
+//            storePassword "ENTER_PASSWORD"
+//            keyAlias "medo"
+//            keyPassword "ENTER_PASSWORD"
+//        }
+//    }
+
+    android {
+        lintOptions {
+            abortOnError false
         }
     }
 
@@ -30,7 +46,6 @@ android {
             buildConfigField "String", "API_IMAGE", "\"https://dl.dropboxusercontent.com/u/28279358/Orthodox/\""
             buildConfigField "boolean", "IS_RELEASE", "false"
 
-            versionNameSuffix "-debug"
             minifyEnabled false
         }
 
@@ -38,7 +53,8 @@ android {
             buildConfigField "String", "API_IMAGE", "\"https://dl.dropboxusercontent.com/u/28279358/Orthodox/\""
             buildConfigField "boolean", "IS_RELEASE", "true"
 
-            minifyEnabled false
+//            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

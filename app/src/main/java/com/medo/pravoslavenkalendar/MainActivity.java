@@ -226,7 +226,9 @@ public class MainActivity extends BaseActivity implements
 
         // toggle the favorite status
         setFavorite(selectedPage + 1, !isFavorite(selectedPage + 1));
-        setupButtons(null);
+        FragmentStatePagerAdapter adapter = (FragmentStatePagerAdapter) pager.getAdapter();
+        OrthodoxFragment orthodoxFragment = (OrthodoxFragment) adapter.instantiateItem(pager, pager.getCurrentItem());
+        setupButtons(orthodoxFragment.getPalette());
       }
     });
   }
