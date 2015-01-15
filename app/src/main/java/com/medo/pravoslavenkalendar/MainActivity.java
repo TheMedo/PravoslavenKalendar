@@ -188,6 +188,9 @@ public class MainActivity extends BaseActivity implements
     textHoliday.setCustomFont(this, "fonts/kapak.otf");
     textHolidayNational.setCustomFont(this, "fonts/kapak.otf");
 
+    // set the wallpaper icon based on the automatic wallpaper changing state
+    imageWallpaper.setImageResource(isWallaperEnabled() ? R.drawable.ic_action_wallpaper_remove : R.drawable.ic_action_wallpaper);
+
     // initialize the calendar by parsing the assets json
     // we don't keep the calendar in database since json parsing
     // with Gson is lighting fast even on lower end devices
@@ -392,12 +395,16 @@ public class MainActivity extends BaseActivity implements
                             if (wallpaperEnabled) {
                               // disable the wallpaper
                               setWallpaperEnabled(false);
+                              // set the wallpaper icon based on the automatic wallpaper changing state
+                              imageWallpaper.setImageResource(R.drawable.ic_action_wallpaper);
                               // hide the panel
                               togglePanel();
                             }
                             else {
                               // enable the wallpaper
                               setWallpaperEnabled(true);
+                              // set the wallpaper icon based on the automatic wallpaper changing state
+                              imageWallpaper.setImageResource(R.drawable.ic_action_wallpaper_remove);
                               // hide the panel
                               togglePanel();
                             }
