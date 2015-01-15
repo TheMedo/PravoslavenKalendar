@@ -58,7 +58,6 @@ public class BaseActivity extends FragmentActivity {
       return snappyDb.getBoolean(String.valueOf(dayOfYear));
     }
     catch (SnappydbException e) {
-      Log.d("Pravoslaven", "No favorite status for: " + dayOfYear);
       // return false if no value is persisted in the app
       return false;
     }
