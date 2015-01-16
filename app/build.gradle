@@ -24,16 +24,6 @@ android {
         }
     }
 
-//    signingConfigs {
-//
-//        release {
-//            storeFile file("medo.keystore")
-//            storePassword "ENTER_PASSWORD"
-//            keyAlias "medo"
-//            keyPassword "ENTER_PASSWORD"
-//        }
-//    }
-
     android {
         lintOptions {
             abortOnError false
@@ -53,7 +43,6 @@ android {
             buildConfigField "String", "API_IMAGE", "\"https://dl.dropboxusercontent.com/u/28279358/Orthodox/\""
             buildConfigField "boolean", "IS_RELEASE", "true"
 
-//            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
