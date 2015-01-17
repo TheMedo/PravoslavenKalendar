@@ -108,7 +108,7 @@ public class OrthodoxWidgetProvider extends AppWidgetProvider {
           rv.setScrollPosition(R.id.list_view, Calendar.getInstance().get(Calendar.DAY_OF_YEAR) - 1);
           appWidgetManager.partiallyUpdateAppWidget(appWidgetId, rv);
         }
-      }, 1000);
+      }, 3000);
 
       appWidgetManager.updateAppWidget(appWidgetId, rv);
     }

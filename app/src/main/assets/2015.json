@@ -431,8 +431,7 @@
          }
       ],
       "fastingFoods":[  
-         "Масло",
-         "Вино"
+         "Строг пост"
       ]
    },
    {  
@@ -441,7 +440,7 @@
       "imageUrl":"",
       "holidays":[  
          {  
-            "name":"Богојавление - Водици - Крштевање на Г и Х",
+            "name":"Богојавление - Водици - Крштевање на Господ Исус Христос",
             "color":"црвен",
             "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=0&id=BBKB"
          }
@@ -2432,7 +2431,7 @@
    },
    {  
       "dayOfYear":"101",
-      "nationalHoliday":null,
+      "nationalHoliday":"Велик сабота (Сабота пред Велигден)",
       "imageUrl":"",
       "holidays":[  
          {  
@@ -2447,11 +2446,11 @@
    },
    {  
       "dayOfYear":"102",
-      "nationalHoliday":null,
+      "nationalHoliday":"Велигден",
       "imageUrl":"",
       "holidays":[  
          {  
-            "name":"Велигден",
+            "name":"Воскресение Христово - Велигден",
             "color":"црвен",
             "descriptionUrl":"http://www.crkvenikalendar.com/zitije_mk.php?pok=1&id=BD"
          }
@@ -6737,8 +6736,7 @@
          }
       ],
       "fastingFoods":[  
-         "Масло",
-         "Вино"
+         "Строг пост"
       ]
    },
    {  

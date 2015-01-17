@@ -100,7 +100,6 @@ public class WallpaperService extends IntentService {
 
       WallpaperManager wallpaperManager = WallpaperManager.getInstance(this);
       wallpaperManager.setBitmap(Bitmap.createScaledBitmap(source, (int) width, (int) height, true));
-      wallpaperManager.setWallpaperOffsetSteps(0.5f, 0f);
       Log.d("Pravoslaven", "Wallpaper set.");
     }
     catch (Exception e) {

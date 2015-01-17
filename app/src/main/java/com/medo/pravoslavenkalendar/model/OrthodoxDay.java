@@ -46,7 +46,7 @@ public class OrthodoxDay {
   public String getImageUrlOrPath(Context context) {
 
     File localFile = FileUtils.getOutputPictureFile(context, dayOfYear, false);
-    if (localFile.exists()) {
+    if (localFile != null && localFile.exists()) {
       return "file:" + localFile.getAbsolutePath();
     }
     else {
