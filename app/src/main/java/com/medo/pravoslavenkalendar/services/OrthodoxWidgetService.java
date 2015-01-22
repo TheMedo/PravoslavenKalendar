@@ -83,7 +83,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     rv.setTextViewText(R.id.text_holiday, item.getHolidays().get(0).getName());
     rv.setTextViewText(R.id.text_holiday_national, item.getNationalHoliday() == null ? "" : item.getNationalHoliday());
     switch (item.getFastingFoods().get(0).toLowerCase()) {
-      case "води":
+      case "без масло":
         rv.setImageViewResource(R.id.image_fasting, R.drawable.ic_water);
         break;
       case "масло":

@@ -548,7 +548,7 @@ public class MainActivityCompat extends BaseActivity implements
       textFasting.setPadding(padding, 0, padding, padding);
       textFasting.setText(fastingFood);
       switch (fastingFood.toLowerCase()) {
-        case "води":
+        case "без масло":
           textFasting.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_water, 0, 0);
           break;
         case "масло":
