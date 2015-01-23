@@ -577,7 +577,9 @@ public class MainActivity extends BaseActivity implements
       public void onClick(View v) {
 
         // open the holiday description in browser
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(orthodoxHolidayMajor.getDescriptionUrl())));
+        if (orthodoxHolidayMajor.getDescriptionUrl() != null) {
+          startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(orthodoxHolidayMajor.getDescriptionUrl())));
+        }
       }
     });
 

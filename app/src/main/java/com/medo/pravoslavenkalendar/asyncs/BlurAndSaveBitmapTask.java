@@ -33,6 +33,9 @@ public class BlurAndSaveBitmapTask extends AsyncTask<Bitmap, Void, File> {
 
     // cache the normal image on the SD
     File normalOutputFile = FileUtils.getOutputPictureFile(context, dayOfYear, false);
+    if (normalOutputFile == null) {
+      return null;
+    }
     if (!normalOutputFile.exists()) {
       BitmapUtils.persistImage(params[0], normalOutputFile);
     }

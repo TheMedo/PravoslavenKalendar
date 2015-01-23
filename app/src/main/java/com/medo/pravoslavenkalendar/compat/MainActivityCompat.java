@@ -598,7 +598,9 @@ public class MainActivityCompat extends BaseActivity implements
           @Override
           public void onClick(View v) {
             // open the holiday description in browser
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(orthodoxHolidayMinor.getDescriptionUrl())));
+            if (orthodoxHolidayMajor.getDescriptionUrl() != null) {
+              startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(orthodoxHolidayMinor.getDescriptionUrl())));
+            }
           }
         });
         linearHolidays.addView(textOrthodoxHoliday);
