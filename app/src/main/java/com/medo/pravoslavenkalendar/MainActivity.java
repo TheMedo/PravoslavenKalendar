@@ -248,11 +248,11 @@ public class MainActivity extends BaseActivity implements
   @Override
   public void togglePanel() {
 
-    if (panel.isPanelExpanded()) {
-      panel.collapsePanel();
+    if (panel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+      panel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
     else {
-      panel.expandPanel();
+      panel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
   }
 
@@ -287,8 +287,8 @@ public class MainActivity extends BaseActivity implements
 
     // when we start flipping the view pager
     // we need to collapse the panel
-    if (panel.isPanelExpanded()) {
-      panel.collapsePanel();
+    if (panel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+      panel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
   }
 
@@ -296,8 +296,8 @@ public class MainActivity extends BaseActivity implements
   public void onBackPressed() {
 
     // collapse the panel on back pressed
-    if (panel.isPanelExpanded()) {
-      panel.collapsePanel();
+    if (panel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED) {
+      panel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
     }
     else {
       super.onBackPressed();
