@@ -42,8 +42,6 @@ public class OrthodoxFragment extends Fragment implements BitmapCallback {
   ImageView imageBackground;
   @InjectView(R.id.image_blur)
   ImageView imageBlur;
-  @InjectView(R.id.image_dim)
-  ImageView imageDim;
 
   private OrthodoxDay orthodoxDay;
   private MainCallback callback;
@@ -138,15 +136,6 @@ public class OrthodoxFragment extends Fragment implements BitmapCallback {
 
     // when the panel is sliding from 0 to 1 and vice versa
     // we need to animate the orthodox image
-
-    // start dimming the image by tweaking the black overlay opacity
-    float newDim = MathUtils.scaleInRange(
-            percentage,
-            0f,
-            1f,
-            0f,
-            0.4f);
-    imageDim.setAlpha(newDim);
 
     // start showing the blur overlay
     imageBlur.setAlpha(percentage);
