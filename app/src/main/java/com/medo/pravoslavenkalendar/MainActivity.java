@@ -528,7 +528,14 @@ public class MainActivity extends BaseActivity implements
     });
 
     // show the dialog
-    calendarDialog.show(getSupportFragmentManager(), "Pravoslaven");
+    try {
+      calendarDialog.show(getSupportFragmentManager(), "Pravoslaven");
+    }
+    catch (Exception e) {
+      // ignore exception
+      // in some rare cases this can be called
+      // after the app goes in background
+    }
   }
 
   private void setupDrawer() {
